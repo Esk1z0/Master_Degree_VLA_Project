@@ -164,6 +164,30 @@ lerobot-record \
     --policy.empty_cameras=1 \
     --policy.compile_model=true
 
+## Prueba Evaluar modelo tfm_layer_ablation_expert_only_v3 entrenado
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM1 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video0", width: 640, height: 480, fps: 30, fourcc: "MJPG"}, camera2: {type: opencv, index_or_path: "/dev/video2", width: 640, height: 480, fps: 30, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM0 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_tfm_layer_ablation_expert_only_v3_try_1 \
+    --dataset.num_episodes=15 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/train/tfm_layer_ablation_expert_only_v3/checkpoints/last/pretrained_model \
+    --policy.empty_cameras=1 \
+    --policy.compile_model=true
+
 # Datasets
 ## Juntar dos datasets para formar uno solo para las capas
 lerobot-edit-dataset \

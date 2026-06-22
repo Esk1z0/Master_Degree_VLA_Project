@@ -1,0 +1,16 @@
+test_id,modelo,bloques_desactivados,intento,tipo_configuracion,layout_id,fuente,starBlackPos,starOrangePos,cubeBlackPos,cubeOrangePos,rot,descripcion_config,estrella_negra_agarre,estrella_negra_destino,estrella_naranja_agarre,estrella_naranja_destino,cubo_negro_agarre,cubo_negro_destino,cubo_naranja_agarre,cubo_naranja_destino,finalizacion_limpia,puntuacion_bruta,puntuacion_normalizada,exito_completo,modo_fallo,objeto_fallo,fase_fallo,notas
+E-01,base,None,1,training,manual,manual,A1,A3,B1,B3,low,Config training zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
+E-01,base,None,2,training,manual,manual,A1,A3,B1,B3,low,Config training zonas A-B sin zona C,1,1,0,0,0,0,1,0,0,3,0.33,0,bloqueo,cubo_negro,aproximacion,
+E-01,base,None,3,training,manual,manual,A1,A3,B1,B3,low,Config training zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
+E-01,base,None,4,training,manual,manual,A1,A3,B1,B3,low,Config training zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
+E-01,base,None,5,training,manual,manual,A1,A3,B1,B3,low,Config training zonas A-B sin zona C,0,0,1,1,1,1,1,1,0,6,0.67,0,otro,estrella_negra,finalizacion,simplemente no lo tiene en cuenta al ejecutar
+E-02,base,None,1,no_visto,manual,manual,B2,A2,A1,B3,mid,Config no vista zonas A-B sin zona C,1,1,1,1,0,0,1,1,0,6,0.67,0,bloqueo,cubo_negro,finalizacion,se queda pensando en una seccion donde no habia nada
+E-02,base,None,2,no_visto,manual,manual,B2,A2,A1,B3,mid,Config no vista zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
+E-02,base,None,3,no_visto,manual,manual,B2,A2,A1,B3,mid,Config no vista zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
+E-02,base,None,4,no_visto,manual,manual,B2,A2,A1,B3,mid,Config no vista zonas A-B sin zona C,1,1,1,1,0,0,1,1,0,6,0.67,0,sin_aproximacion,cubo_negro,aproximacion,
+E-02,base,None,5,no_visto,manual,manual,B2,A2,A1,B3,mid,Config no vista zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
+E-03,base,None,1,stress,manual,manual,A3,B1,B3,A1,high,Config stress zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
+E-03,base,None,2,stress,manual,manual,A3,B1,B3,A1,high,Config stress zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
+E-03,base,None,3,stress,manual,manual,A3,B1,B3,A1,high,Config stress zonas A-B sin zona C,0,0,1,1,1,1,0,0,0,4,0.44,0,timeout,cubo_naranja,varias,"no consigue coger el cubo naranja, abandona y no le da tiempo a mover la estrella negra"
+E-03,base,None,4,stress,manual,manual,A3,B1,B3,A1,high,Config stress zonas A-B sin zona C,1,1,1,1,1,1,0,0,0,6,0.67,0,bloqueo,cubo_naranja,varias,"falla al coger el cubo, sigue y luego se bloquea al final"
+E-03,base,None,5,stress,manual,manual,A3,B1,B3,A1,high,Config stress zonas A-B sin zona C,1,1,1,1,1,1,1,1,1,9,1.00,1,ninguno,ninguno,ninguna,
