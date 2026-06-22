@@ -1,2 +1,13 @@
 data/cam_calibration_imgs/
 data/new_cam_calibration_imgs/
+
+# Carpetas de resultados y salidas locales pesadas
+outputs/
+results/
+wip/
+lerobot/
+
+# Temporales de Python y Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
