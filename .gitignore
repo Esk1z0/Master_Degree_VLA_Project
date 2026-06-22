@@ -5,7 +5,6 @@ data/new_cam_calibration_imgs/
 outputs/
 results/
 wip/
-lerobot/
 
 # Temporales de Python y Jupyter
 __pycache__/

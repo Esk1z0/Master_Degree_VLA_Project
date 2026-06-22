@@ -1,0 +1,3 @@
+[submodule "lerobot"]
+	path = lerobot
+	url = https://github.com/Esk1z0/lerobot_custom_MasterDegree.git
