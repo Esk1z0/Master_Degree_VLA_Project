@@ -188,12 +188,69 @@ lerobot-record \
     --policy.empty_cameras=1 \
     --policy.compile_model=true
 
+## Replay de episodios
+lerobot-dataset-viz --repo-id /home/juanes/.cache/huggingface/lerobot/Esk1z0/eval_tfm_layer_ablation_expert_only_v3_try_1 --episode 13
+
+## prueba con la ablacion de capas
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM1 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video0", width: 640, height: 480, fps: 30, fourcc: "MJPG"}, camera2: {type: opencv, index_or_path: "/dev/video2", width: 640, height: 480, fps: 30, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM0 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_tfm_layer_ablation_expert_only_v3_try_1 \
+    --dataset.num_episodes=15 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/train/tfm_layer_ablation_expert_only_v3/checkpoints/last/pretrained_model \
+    --policy.empty_cameras=1 \
+    --policy.compile_model=true
+
+
+## Prueba con ablacion de capas
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM1 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video0", width: 640, height: 480, fps: 30, fourcc: "MJPG"}, camera2: {type: opencv, index_or_path: "/dev/video2", width: 640, height: 480, fps: 30, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM0 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_tfm_layercut_0 \
+    --dataset.num_episodes=15 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/eval/layercut_0 \
+    --policy.empty_cameras=1 \
+    --policy.compile_model=true
+
+
 # Datasets
 ## Juntar dos datasets para formar uno solo para las capas
 lerobot-edit-dataset \
     --new_repo_id Esk1z0/tfm_layer_ablation_batch_1_and_2 \
     --operation.type merge \
     --operation.repo_ids "['Esk1z0/tfm_layer_ablation_batch_1', 'Esk1z0/tfm_layer_ablation_batch_2']"
+
+# Evaluaciones
+## calcula los resultados de las evaluaciones
+python ./ablation/evaluations/calculate_evaluation_scores.py 
 
 # wandb
 ## programacion de sincronizaciones

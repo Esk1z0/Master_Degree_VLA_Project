@@ -15,7 +15,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-CSV_PATH = Path(__file__).parent / "eval_checklist_base_model.csv"
+CSV_PATH = Path(__file__).parent / "eval_checklist_layercut_0.csv"
 
 BINARY_COLS = [
     "estrella_negra_agarre",
@@ -203,7 +203,7 @@ def print_summary(rows: list[dict]) -> None:
     sep = "=" * 62
 
     print(f"\n{sep}")
-    print("  RESUMEN GLOBAL POR MODELO")
+    print(f"  RESUMEN GLOBAL MODELO: {modelo}")
     print(sep)
     for modelo in sorted(by_model):
         print(f"\n  Modelo: {modelo}")
@@ -215,7 +215,7 @@ def print_summary(rows: list[dict]) -> None:
                 _print_stats(tipo, _collect_stats(subset))
 
     print(f"\n{sep}")
-    print("  ANALISIS DE FALLOS")
+    print(f"  ANALISIS DE FALLOS MODELO: {modelo}")
     print(sep)
     _print_failure_analysis(rows)
 
