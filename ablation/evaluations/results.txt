@@ -247,3 +247,128 @@ Objetos con mas fallos (objeto_fallo):
     estrella_naranja            2 ejecuciones  (13.3 %)
     estrella_negra              2 ejecuciones  (13.3 %)
     cubo_negro                  2 ejecuciones  (13.3 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_3
+==============================================================
+
+  Modelo: layercut_3
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.257
+    Desviacion estandar   : 0.137
+    Tasa exito completo   : 0.000  (0/15)
+    Tasa agarre estrellas : 0.400
+    Tasa coloc. estrellas : 0.367
+    Tasa agarre cubos     : 0.200
+    Tasa coloc. cubos     : 0.200
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.308
+    Desviacion estandar   : 0.176
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.200
+    Tasa coloc. estrellas : 0.200
+    Tasa agarre cubos     : 0.500
+    Tasa coloc. cubos     : 0.500
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.242
+    Desviacion estandar   : 0.044
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.600
+    Tasa coloc. estrellas : 0.500
+    Tasa agarre cubos     : 0.000
+    Tasa coloc. cubos     : 0.000
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.220
+    Desviacion estandar   : 0.139
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.400
+    Tasa coloc. estrellas : 0.400
+    Tasa agarre cubos     : 0.100
+    Tasa coloc. cubos     : 0.100
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_3
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    agarre_fallido             14 ejecuciones  (93.3 %)
+    objeto_caido                1 ejecuciones  (6.7 %)
+  
+Fases con mas errores (fase_fallo):
+    agarre                     13 ejecuciones  (86.7 %)
+    elevacion                   1 ejecuciones  (6.7 %)
+    transporte                  1 ejecuciones  (6.7 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    estrella_naranja            6 ejecuciones  (40.0 %)
+    cubo_naranja                4 ejecuciones  (26.7 %)
+    estrella_negra              4 ejecuciones  (26.7 %)
+    cubo_negro                  1 ejecuciones  (6.7 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_4
+==============================================================
+
+  Modelo: layercut_4
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.607
+    Desviacion estandar   : 0.370
+    Tasa exito completo   : 0.400  (6/15)
+    Tasa agarre estrellas : 0.700
+    Tasa coloc. estrellas : 0.700
+    Tasa agarre cubos     : 0.567
+    Tasa coloc. cubos     : 0.567
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.644
+    Desviacion estandar   : 0.442
+    Tasa exito completo   : 0.600  (3/5)
+    Tasa agarre estrellas : 0.600
+    Tasa coloc. estrellas : 0.600
+    Tasa agarre cubos     : 0.700
+    Tasa coloc. cubos     : 0.700
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.646
+    Desviacion estandar   : 0.248
+    Tasa exito completo   : 0.200  (1/5)
+    Tasa agarre estrellas : 0.800
+    Tasa coloc. estrellas : 0.800
+    Tasa agarre cubos     : 0.600
+    Tasa coloc. cubos     : 0.600
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.532
+    Desviacion estandar   : 0.382
+    Tasa exito completo   : 0.400  (2/5)
+    Tasa agarre estrellas : 0.700
+    Tasa coloc. estrellas : 0.700
+    Tasa agarre cubos     : 0.400
+    Tasa coloc. cubos     : 0.400
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_4
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    agarre_fallido              5 ejecuciones  (33.3 %)
+    bloqueo                     3 ejecuciones  (20.0 %)
+    timeout                     1 ejecuciones  (6.7 %)
+  
+Fases con mas errores (fase_fallo):
+    aproximacion                7 ejecuciones  (46.7 %)
+    finalizacion                2 ejecuciones  (13.3 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    cubo_naranja                3 ejecuciones  (20.0 %)
+    varios                      2 ejecuciones  (13.3 %)
+    no_aplica                   2 ejecuciones  (13.3 %)
+    cubo_negro                  1 ejecuciones  (6.7 %)
+    estrella_naranja            1 ejecuciones  (6.7 %)
