@@ -224,15 +224,15 @@ python ./ablation/prepare_layercut_checkpoint.py \
 ## Prueba con ablacion de capas
 lerobot-record \
     --robot.type=so101_follower \
-    --robot.port=/dev/ttyACM1 \
+    --robot.port=/dev/ttyACM0 \
     --robot.id=tfm_so101_follower \
     --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video0", width: 640, height: 480, fps: 30, fourcc: "MJPG"}, camera2: {type: opencv, index_or_path: "/dev/video2", width: 640, height: 480, fps: 30, fourcc: "MJPG"}}' \
     --teleop.type=so101_leader \
-    --teleop.port=/dev/ttyACM0 \
+    --teleop.port=/dev/ttyACM1 \
     --teleop.id=tfm_so101_leader \
     --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
     --display_data=false \
-    --dataset.repo_id=Esk1z0/eval_tfm_layercut_4 \
+    --dataset.repo_id=Esk1z0/eval_tfm_layercut_6 \
     --dataset.num_episodes=15 \
     --dataset.episode_time_s=120 \
     --dataset.reset_time_s=30 \
@@ -241,7 +241,7 @@ lerobot-record \
     --dataset.streaming_encoding=false \
     --dataset.encoder_threads=4 \
     --dataset.vcodec=h264 \
-    --policy.path=outputs/eval/layercut_4 \
+    --policy.path=outputs/eval/layercut_6 \
     --policy.empty_cameras=1 \
     --policy.compile_model=true
 
