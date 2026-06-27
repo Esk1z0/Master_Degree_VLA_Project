@@ -495,3 +495,561 @@ Objetos con mas fallos (objeto_fallo):
     varias                      2 ejecuciones  (13.3 %)
     no_aplica                   1 ejecuciones  (6.7 %)
     cubo_naranja                1 ejecuciones  (6.7 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_7
+==============================================================
+
+  Modelo: layercut_7
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.585
+    Desviacion estandar   : 0.263
+    Tasa exito completo   : 0.200  (3/15)
+    Tasa agarre estrellas : 0.700
+    Tasa coloc. estrellas : 0.700
+    Tasa agarre cubos     : 0.567
+    Tasa coloc. cubos     : 0.567
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.576
+    Desviacion estandar   : 0.355
+    Tasa exito completo   : 0.400  (2/5)
+    Tasa agarre estrellas : 0.400
+    Tasa coloc. estrellas : 0.400
+    Tasa agarre cubos     : 0.800
+    Tasa coloc. cubos     : 0.800
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.624
+    Desviacion estandar   : 0.092
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.900
+    Tasa coloc. estrellas : 0.900
+    Tasa agarre cubos     : 0.500
+    Tasa coloc. cubos     : 0.500
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.554
+    Desviacion estandar   : 0.265
+    Tasa exito completo   : 0.200  (1/5)
+    Tasa agarre estrellas : 0.800
+    Tasa coloc. estrellas : 0.800
+    Tasa agarre cubos     : 0.400
+    Tasa coloc. cubos     : 0.400
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_7
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                     9 ejecuciones  (60.0 %)
+    timeout                     3 ejecuciones  (20.0 %)
+  
+Fases con mas errores (fase_fallo):
+    aproximacion                8 ejecuciones  (53.3 %)
+    agarre                      4 ejecuciones  (26.7 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    estrella_naranja            4 ejecuciones  (26.7 %)
+    cubo_negro                  3 ejecuciones  (20.0 %)
+    varios                      3 ejecuciones  (20.0 %)
+    estrella_negra              2 ejecuciones  (13.3 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_8
+==============================================================
+
+  Modelo: layercut_8
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.533
+    Desviacion estandar   : 0.308
+    Tasa exito completo   : 0.200  (3/15)
+    Tasa agarre estrellas : 0.700
+    Tasa coloc. estrellas : 0.667
+    Tasa agarre cubos     : 0.467
+    Tasa coloc. cubos     : 0.467
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.622
+    Desviacion estandar   : 0.376
+    Tasa exito completo   : 0.400  (2/5)
+    Tasa agarre estrellas : 0.600
+    Tasa coloc. estrellas : 0.600
+    Tasa agarre cubos     : 0.700
+    Tasa coloc. cubos     : 0.700
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.556
+    Desviacion estandar   : 0.103
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 1.000
+    Tasa coloc. estrellas : 0.900
+    Tasa agarre cubos     : 0.300
+    Tasa coloc. cubos     : 0.300
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.420
+    Desviacion estandar   : 0.333
+    Tasa exito completo   : 0.200  (1/5)
+    Tasa agarre estrellas : 0.500
+    Tasa coloc. estrellas : 0.500
+    Tasa agarre cubos     : 0.400
+    Tasa coloc. cubos     : 0.400
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_8
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                     9 ejecuciones  (60.0 %)
+    agarre_fallido              2 ejecuciones  (13.3 %)
+    objeto_caido                1 ejecuciones  (6.7 %)
+  
+Fases con mas errores (fase_fallo):
+    agarre                      8 ejecuciones  (53.3 %)
+    aproximacion                4 ejecuciones  (26.7 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    estrella_naranja            5 ejecuciones  (33.3 %)
+    varios                      3 ejecuciones  (20.0 %)
+    estrella_negra              2 ejecuciones  (13.3 %)
+    cubo_negro                  1 ejecuciones  (6.7 %)
+    cubo_naranja                1 ejecuciones  (6.7 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_9
+==============================================================
+
+  Modelo: layercut_9
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.473
+    Desviacion estandar   : 0.290
+    Tasa exito completo   : 0.133  (2/15)
+    Tasa agarre estrellas : 0.600
+    Tasa coloc. estrellas : 0.600
+    Tasa agarre cubos     : 0.433
+    Tasa coloc. cubos     : 0.433
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.554
+    Desviacion estandar   : 0.265
+    Tasa exito completo   : 0.200  (1/5)
+    Tasa agarre estrellas : 0.500
+    Tasa coloc. estrellas : 0.500
+    Tasa agarre cubos     : 0.700
+    Tasa coloc. cubos     : 0.700
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.512
+    Desviacion estandar   : 0.357
+    Tasa exito completo   : 0.200  (1/5)
+    Tasa agarre estrellas : 0.700
+    Tasa coloc. estrellas : 0.700
+    Tasa agarre cubos     : 0.400
+    Tasa coloc. cubos     : 0.400
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.354
+    Desviacion estandar   : 0.180
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.600
+    Tasa coloc. estrellas : 0.600
+    Tasa agarre cubos     : 0.200
+    Tasa coloc. cubos     : 0.200
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_9
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                     8 ejecuciones  (53.3 %)
+    agarre_fallido              5 ejecuciones  (33.3 %)
+  
+Fases con mas errores (fase_fallo):
+    agarre                      7 ejecuciones  (46.7 %)
+    aproximacion                6 ejecuciones  (40.0 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    varios                      4 ejecuciones  (26.7 %)
+    estrella_negra              3 ejecuciones  (20.0 %)
+    cubo_negro                  2 ejecuciones  (13.3 %)
+    estrella_naranja            2 ejecuciones  (13.3 %)
+    cubo_naranja                2 ejecuciones  (13.3 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_10
+==============================================================
+
+  Modelo: layercut_10
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.429
+    Desviacion estandar   : 0.337
+    Tasa exito completo   : 0.133  (2/15)
+    Tasa agarre estrellas : 0.433
+    Tasa coloc. estrellas : 0.433
+    Tasa agarre cubos     : 0.500
+    Tasa coloc. cubos     : 0.500
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.422
+    Desviacion estandar   : 0.388
+    Tasa exito completo   : 0.200  (1/5)
+    Tasa agarre estrellas : 0.300
+    Tasa coloc. estrellas : 0.300
+    Tasa agarre cubos     : 0.600
+    Tasa coloc. cubos     : 0.600
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.466
+    Desviacion estandar   : 0.348
+    Tasa exito completo   : 0.200  (1/5)
+    Tasa agarre estrellas : 0.600
+    Tasa coloc. estrellas : 0.600
+    Tasa agarre cubos     : 0.400
+    Tasa coloc. cubos     : 0.400
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.400
+    Desviacion estandar   : 0.261
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.400
+    Tasa coloc. estrellas : 0.400
+    Tasa agarre cubos     : 0.500
+    Tasa coloc. cubos     : 0.500
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_10
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                     5 ejecuciones  (33.3 %)
+    timeout                     4 ejecuciones  (26.7 %)
+    sin_aproximacion            3 ejecuciones  (20.0 %)
+    objeto_caido                1 ejecuciones  (6.7 %)
+  
+Fases con mas errores (fase_fallo):
+    finalizacion                5 ejecuciones  (33.3 %)
+    aproximacion                4 ejecuciones  (26.7 %)
+    agarre                      3 ejecuciones  (20.0 %)
+    colocacion                  1 ejecuciones  (6.7 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    estrella_negra              6 ejecuciones  (40.0 %)
+    varios                      2 ejecuciones  (13.3 %)
+    estrella_naranja            2 ejecuciones  (13.3 %)
+    no_aplica                   2 ejecuciones  (13.3 %)
+    cubo_naranja                1 ejecuciones  (6.7 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_11
+==============================================================
+
+  Modelo: layercut_11
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.541
+    Desviacion estandar   : 0.330
+    Tasa exito completo   : 0.200  (3/15)
+    Tasa agarre estrellas : 0.667
+    Tasa coloc. estrellas : 0.667
+    Tasa agarre cubos     : 0.500
+    Tasa coloc. cubos     : 0.500
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.668
+    Desviacion estandar   : 0.365
+    Tasa exito completo   : 0.400  (2/5)
+    Tasa agarre estrellas : 0.600
+    Tasa coloc. estrellas : 0.600
+    Tasa agarre cubos     : 0.800
+    Tasa coloc. cubos     : 0.800
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.446
+    Desviacion estandar   : 0.283
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.700
+    Tasa coloc. estrellas : 0.700
+    Tasa agarre cubos     : 0.300
+    Tasa coloc. cubos     : 0.300
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.510
+    Desviacion estandar   : 0.296
+    Tasa exito completo   : 0.200  (1/5)
+    Tasa agarre estrellas : 0.700
+    Tasa coloc. estrellas : 0.700
+    Tasa agarre cubos     : 0.400
+    Tasa coloc. cubos     : 0.400
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_11
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                    10 ejecuciones  (66.7 %)
+    agarre_fallido              1 ejecuciones  (6.7 %)
+    objeto_caido                1 ejecuciones  (6.7 %)
+  
+Fases con mas errores (fase_fallo):
+    aproximacion                9 ejecuciones  (60.0 %)
+    agarre                      2 ejecuciones  (13.3 %)
+    colocacion                  1 ejecuciones  (6.7 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    varios                      6 ejecuciones  (40.0 %)
+    estrella_negra              4 ejecuciones  (26.7 %)
+    cubo_negro                  2 ejecuciones  (13.3 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_12
+==============================================================
+
+  Modelo: layercut_12
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.355
+    Desviacion estandar   : 0.242
+    Tasa exito completo   : 0.000  (0/15)
+    Tasa agarre estrellas : 0.633
+    Tasa coloc. estrellas : 0.633
+    Tasa agarre cubos     : 0.167
+    Tasa coloc. cubos     : 0.167
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.312
+    Desviacion estandar   : 0.303
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.500
+    Tasa coloc. estrellas : 0.500
+    Tasa agarre cubos     : 0.200
+    Tasa coloc. cubos     : 0.200
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.532
+    Desviacion estandar   : 0.113
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 1.000
+    Tasa coloc. estrellas : 1.000
+    Tasa agarre cubos     : 0.200
+    Tasa coloc. cubos     : 0.200
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.220
+    Desviacion estandar   : 0.139
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.400
+    Tasa coloc. estrellas : 0.400
+    Tasa agarre cubos     : 0.100
+    Tasa coloc. cubos     : 0.100
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_12
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                     9 ejecuciones  (60.0 %)
+    timeout                     3 ejecuciones  (20.0 %)
+    agarre_fallido              2 ejecuciones  (13.3 %)
+    objeto_caido                1 ejecuciones  (6.7 %)
+  
+Fases con mas errores (fase_fallo):
+    agarre                     11 ejecuciones  (73.3 %)
+    aproximacion                2 ejecuciones  (13.3 %)
+    transporte                  1 ejecuciones  (6.7 %)
+    finalizacion                1 ejecuciones  (6.7 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    cubo_naranja                7 ejecuciones  (46.7 %)
+    varios                      4 ejecuciones  (26.7 %)
+    estrella_negra              2 ejecuciones  (13.3 %)
+    estrella_naranja            2 ejecuciones  (13.3 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_13
+==============================================================
+
+  Modelo: layercut_13
+  Global
+    Ejecuciones con datos : 14
+    Puntuacion media      : 0.251
+    Desviacion estandar   : 0.141
+    Tasa exito completo   : 0.000  (0/14)
+    Tasa agarre estrellas : 0.345
+    Tasa coloc. estrellas : 0.333
+    Tasa agarre cubos     : 0.200
+    Tasa coloc. cubos     : 0.200
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.308
+    Desviacion estandar   : 0.108
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.400
+    Tasa coloc. estrellas : 0.400
+    Tasa agarre cubos     : 0.300
+    Tasa coloc. cubos     : 0.300
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.176
+    Desviacion estandar   : 0.165
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.200
+    Tasa coloc. estrellas : 0.200
+    Tasa agarre cubos     : 0.200
+    Tasa coloc. cubos     : 0.200
+  stress
+    Ejecuciones con datos : 4
+    Puntuacion media      : 0.275
+    Desviacion estandar   : 0.095
+    Tasa exito completo   : 0.000  (0/4)
+    Tasa agarre estrellas : 0.444
+    Tasa coloc. estrellas : 0.400
+    Tasa agarre cubos     : 0.100
+    Tasa coloc. cubos     : 0.100
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_13
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                    15 ejecuciones  (100.0 %)
+  
+Fases con mas errores (fase_fallo):
+    agarre                     15 ejecuciones  (100.0 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    varios                      8 ejecuciones  (53.3 %)
+    cubo_naranja                3 ejecuciones  (20.0 %)
+    estrella_naranja            2 ejecuciones  (13.3 %)
+    estrella_negra              1 ejecuciones  (6.7 %)
+    cubo_negro                  1 ejecuciones  (6.7 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_14
+==============================================================
+
+  Modelo: layercut_14
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.169
+    Desviacion estandar   : 0.165
+    Tasa exito completo   : 0.000  (0/15)
+    Tasa agarre estrellas : 0.167
+    Tasa coloc. estrellas : 0.167
+    Tasa agarre cubos     : 0.233
+    Tasa coloc. cubos     : 0.200
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.132
+    Desviacion estandar   : 0.176
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.000
+    Tasa coloc. estrellas : 0.000
+    Tasa agarre cubos     : 0.300
+    Tasa coloc. cubos     : 0.300
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.198
+    Desviacion estandar   : 0.202
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.200
+    Tasa coloc. estrellas : 0.200
+    Tasa agarre cubos     : 0.300
+    Tasa coloc. cubos     : 0.200
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.176
+    Desviacion estandar   : 0.088
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.300
+    Tasa coloc. estrellas : 0.300
+    Tasa agarre cubos     : 0.100
+    Tasa coloc. cubos     : 0.100
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_14
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                    15 ejecuciones  (100.0 %)
+  
+Fases con mas errores (fase_fallo):
+    agarre                     11 ejecuciones  (73.3 %)
+    varias                      2 ejecuciones  (13.3 %)
+    finalizacion                1 ejecuciones  (6.7 %)
+    no_aplica                   1 ejecuciones  (6.7 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    varios                     12 ejecuciones  (80.0 %)
+    cubo_naranja                1 ejecuciones  (6.7 %)
+    cubo_negro                  1 ejecuciones  (6.7 %)
+    no_aplica                   1 ejecuciones  (6.7 %)
+
+
+==============================================================
+  RESUMEN GLOBAL MODELO: layercut_15
+==============================================================
+
+  Modelo: layercut_15
+  Global
+    Ejecuciones con datos : 15
+    Puntuacion media      : 0.369
+    Desviacion estandar   : 0.167
+    Tasa exito completo   : 0.000  (0/15)
+    Tasa agarre estrellas : 0.700
+    Tasa coloc. estrellas : 0.500
+    Tasa agarre cubos     : 0.367
+    Tasa coloc. cubos     : 0.100
+  training
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.354
+    Desviacion estandar   : 0.111
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.800
+    Tasa coloc. estrellas : 0.300
+    Tasa agarre cubos     : 0.400
+    Tasa coloc. cubos     : 0.100
+  no_visto
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.444
+    Desviacion estandar   : 0.188
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.800
+    Tasa coloc. estrellas : 0.700
+    Tasa agarre cubos     : 0.400
+    Tasa coloc. cubos     : 0.100
+  stress
+    Ejecuciones con datos : 5
+    Puntuacion media      : 0.310
+    Desviacion estandar   : 0.165
+    Tasa exito completo   : 0.000  (0/5)
+    Tasa agarre estrellas : 0.500
+    Tasa coloc. estrellas : 0.500
+    Tasa agarre cubos     : 0.300
+    Tasa coloc. cubos     : 0.100
+
+==============================================================
+  ANALISIS DE FALLOS MODELO: layercut_15
+==============================================================
+  
+Tipos de fallo (modo_fallo):
+    bloqueo                    15 ejecuciones  (100.0 %)
+  
+Fases con mas errores (fase_fallo):
+    varias                     15 ejecuciones  (100.0 %)
+  
+Objetos con mas fallos (objeto_fallo):
+    varios                     12 ejecuciones  (80.0 %)
+    cubo_negro                  3 ejecuciones  (20.0 %)
