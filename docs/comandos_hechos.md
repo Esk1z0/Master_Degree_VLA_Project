@@ -224,15 +224,15 @@ python ./ablation/prepare_layercut_checkpoint.py \
 ## Prueba con ablacion de capas
 lerobot-record \
     --robot.type=so101_follower \
-    --robot.port=/dev/ttyACM0 \
+    --robot.port=/dev/ttyACM1 \
     --robot.id=tfm_so101_follower \
     --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video0", width: 640, height: 480, fps: 30, fourcc: "MJPG"}, camera2: {type: opencv, index_or_path: "/dev/video2", width: 640, height: 480, fps: 30, fourcc: "MJPG"}}' \
     --teleop.type=so101_leader \
-    --teleop.port=/dev/ttyACM1 \
+    --teleop.port=/dev/ttyACM0 \
     --teleop.id=tfm_so101_leader \
     --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
     --display_data=false \
-    --dataset.repo_id=Esk1z0/eval_tfm_layercut_15 \
+    --dataset.repo_id=Esk1z0/eval_tfm_layercut_range_9_10_11 \
     --dataset.num_episodes=15 \
     --dataset.episode_time_s=120 \
     --dataset.reset_time_s=30 \
@@ -241,7 +241,7 @@ lerobot-record \
     --dataset.streaming_encoding=false \
     --dataset.encoder_threads=4 \
     --dataset.vcodec=h264 \
-    --policy.path=outputs/eval/layercut_15 \
+    --policy.path=outputs/eval/layercut_range_9_10_11 \
     --policy.empty_cameras=1 \
     --policy.compile_model=true
 
@@ -280,3 +280,162 @@ echo "=== Tarea completada ==="
 /home/juanes/.cache/huggingface/lerobot/calibration/robots/so_follower/tfm_so101_follower.json
 ## Leader
 /home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader/tfm_so101_leader.json
+
+
+# Nuevos modelos
+## convertir smolvla en smolvla-md
+python ./lerobot/scripts/convert_smolvla_to_smolvla_md.py \
+    --src lerobot/smolvla_base \
+    --dst outputs/smolvla_md_base
+## Prueba copia SmolVLA entrenando pocos episodios, ahora como SmolVLA-MD
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+lerobot-train \
+    --policy.path=outputs/smolvla_md_base \
+    --dataset.repo_id=Esk1z0/tfm_layer_ablation_batch_1_and_2 \
+    --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_layer_ablation_batch_1_and_2" \
+    --batch_size=16 \
+    --steps=600 \
+    --seed=42 \
+    --save_checkpoint=true \
+    --save_freq=300 \
+    --log_freq=50 \
+    --output_dir=outputs/train/smolvla_md \
+    --job_name=tfm_smolvla_md_v1 \
+    --policy.device=cuda \
+    --policy.empty_cameras=1 \
+    --policy.train_expert_only=true \
+    --policy.freeze_vision_encoder=true \
+    --policy.push_to_hub=false \
+    --policy.scheduler_decay_steps=86000 \
+    --dataset.image_transforms.enable=true \
+    --wandb.enable=true \
+    --wandb.mode=offline \
+    --wandb.project=tfm_smolvla_md_v1 \
+    --rename_map='{"observation.images.top": "observation.images.camera1", "observation.images.wrist": "observation.images.camera2"}'
+
+## Prueba SmolVLA-MD entrenado, se prueba la inferencia
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video0", width: 640, height: 480, fps: 30, fourcc: "MJPG"}, camera2: {type: opencv, index_or_path: "/dev/video2", width: 640, height: 480, fps: 30, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_smolvla_md_v1 \
+    --dataset.num_episodes=3 \
+    --dataset.episode_time_s=60 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/train/smolvla_md/checkpoints/last/pretrained_model \
+    --policy.empty_cameras=1 \
+    --policy.compile_model=true
+
+# Dataset final con cámara estéreo
+## Grabación dataset final (60 eps, cámara top monocular + muñeca estéreo SVPRO)
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.id=tfm_so101_follower \
+    --robot.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/robots/so_follower" \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video0", width: 640, height: 480, fps: 30, fourcc: "MJPG"}, camera2: {type: opencv, index_or_path: "/dev/video3", width: 2560, height: 800, fps: 25, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=true \
+    --dataset.repo_id=Esk1z0/tfm_final_dataset_60_eps_v1 \
+    --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_60_eps_v1" \
+    --dataset.fps=25 \
+    --dataset.num_episodes=60 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.streaming_encoding=false \
+    --dataset.num_image_writer_processes=4 \
+    --dataset.push_to_hub=false \
+    #--resume=true
+
+## Grabación segundo dataset final (60 eps, cámara top monocular + muñeca estéreo SVPRO)
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.id=tfm_so101_follower \
+    --robot.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/robots/so_follower" \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video0", width: 640, height: 480, fps: 30, fourcc: "MJPG"}, camera2: {type: opencv, index_or_path: "/dev/video2", width: 2560, height: 800, fps: 25, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=true \
+    --dataset.repo_id=Esk1z0/tfm_final_dataset_60_eps_v2 \
+    --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_60_eps_v2" \
+    --dataset.fps=25 \
+    --dataset.num_episodes=60 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.streaming_encoding=false \
+    --dataset.num_image_writer_processes=4 \
+    --dataset.push_to_hub=false \
+    #--resume=true
+
+
+# Entrenamiento final de modelos
+
+## Preparación de datasets
+
+### Merge v1 + v2 → dataset completo 120 episodios
+lerobot-edit-dataset \
+    --new_repo_id Esk1z0/tfm_final_dataset_120_eps \
+    --operation.type merge \
+    --operation.repo_ids "['Esk1z0/tfm_final_dataset_60_eps_v1', 'Esk1z0/tfm_final_dataset_60_eps_v2']"
+
+### Copia del dataset para añadir depth (modelos D y MD) — no tocar el original
+cp -r /home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_120_eps \
+      /home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_120_eps_depth
+
+### TODO: precomputar point clouds sobre la copia depth
+# (requiere crear lerobot/scripts/precompute_depth_features.py)
+# python lerobot/scripts/precompute_depth_features.py \
+#     --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_120_eps_depth" \
+#     --calib_path="camera/stereo_calibration_result.npz"
+
+
+## SmolVLA-Vanilla (baseline estéreo)
+
+### Conversión de pesos
+python lerobot/scripts/convert_smolvla_to_smolvla_vanilla.py \
+    --src lerobot/smolvla_base \
+    --dst outputs/smolvla_vanilla_base
+
+### Entrenamiento
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+lerobot-train \
+    --policy.path=outputs/smolvla_vanilla_base \
+    --dataset.repo_id=Esk1z0/tfm_final_dataset_120_eps \
+    --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_120_eps" \
+    --batch_size=16 \
+    --steps=90000 \
+    --seed=42 \
+    --save_checkpoint=true \
+    --save_freq=5000 \
+    --log_freq=50 \
+    --output_dir=outputs/train/smolvla_vanilla_v1 \
+    --job_name=smolvla_vanilla_v1 \
+    --policy.device=cuda \
+    --policy.train_expert_only=true \
+    --policy.freeze_vision_encoder=true \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.push_to_hub=false \
+    --policy.scheduler_decay_steps=86000 \
+    --dataset.image_transforms.enable=true \
+    --wandb.enable=true \
+    --wandb.mode=offline \
+    --wandb.project=tfm_final_models
