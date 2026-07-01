@@ -264,7 +264,7 @@ espera="10m"      # Tiempo entre ejecuciones (puedes usar "30m", "1h", "2h", etc
 
 for ((i=1; i<=veces; i++)); do
     echo "=== Ejecución $i de $veces - $(date) ==="
-    .lerobot/bin/wandb sync outputs/train/tfm_layer_ablation_expert_only_v3/wandb/latest-run
+    .lerobot/bin/wandb sync outputs/train/smolvla_vanilla_v1/wandb/latest-run
     
     if [ $i -lt $veces ]; then
         echo "Esperando $espera antes de la siguiente sincronización..."
@@ -439,3 +439,239 @@ lerobot-train \
     --wandb.enable=true \
     --wandb.mode=offline \
     --wandb.project=tfm_final_models
+
+
+# SMOKE TESTS
+## SMOVLA-vanilla
+
+
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video2", width: 640,  height: 480, fps: 30, fourcc: "MJPG"},camera2: {type: opencv, index_or_path: "/dev/video0", width: 2560, height: 800, fps: 15, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_smoketest_smolvla_vanilla_v1 \
+    --dataset.num_episodes=1 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/train/smolvla_vanilla_v1/checkpoints/last/pretrained_model \
+    --policy.empty_cameras=1 \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.compile_model=true
+
+## SMOVLA-M
+### Training smoke
+python lerobot/scripts/convert_smolvla_to_smolvla_m.py \
+    --src lerobot/smolvla_base \
+    --dst outputs/smolvla_m_base
+
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+lerobot-train \
+    --policy.path=outputs/smolvla_m_base \
+    --dataset.repo_id=Esk1z0/tfm_final_dataset_120_eps \
+    --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_120_eps" \
+    --batch_size=4 \
+    --steps=10 \
+    --seed=42 \
+    --save_checkpoint=true \
+    --save_freq=5 \
+    --output_dir=outputs/train/smoke/smolvla_m \
+    --policy.device=cuda \
+    --policy.train_expert_only=true \
+    --policy.freeze_vision_encoder=true \
+    --policy.n_obs_steps=6 \
+    --policy.push_to_hub=false \
+    --policy.temporal_stride=1 \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.scheduler_decay_steps=10 \
+    --dataset.image_transforms.enable=false \
+    --wandb.enable=false
+### Inferencia smoke
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video2", width: 640,  height: 480, fps: 30, fourcc: "MJPG"},camera2: {type: opencv, index_or_path: "/dev/video0", width: 2560, height: 800, fps: 15, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_smoketest_smolvla_m_v1 \
+    --dataset.num_episodes=1 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/train/smoke/smolvla_m/checkpoints/last/pretrained_model \
+    --policy.empty_cameras=1 \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.compile_model=true
+
+## SMOLVLA-D
+### Training smoke
+python lerobot/scripts/convert_smolvla_to_smolvla_d.py \
+    --src lerobot/smolvla_base \
+    --dst outputs/smolvla_d_base
+
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+lerobot-train \
+    --policy.path=outputs/smolvla_d_base \
+    --dataset.repo_id=Esk1z0/tfm_final_dataset_120_eps_depth \
+    --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_120_eps_depth" \
+    --batch_size=4 \
+    --steps=10 \
+    --seed=42 \
+    --save_checkpoint=true \
+    --save_freq=5 \
+    --output_dir=outputs/train/smoke/smolvla_d \
+    --policy.device=cuda \
+    --policy.train_expert_only=true \
+    --policy.freeze_vision_encoder=true \
+    --policy.push_to_hub=false \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.scheduler_decay_steps=10 \
+    --dataset.image_transforms.enable=false \
+    --wandb.enable=false
+### Inferencia smoke
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video2", width: 640,  height: 480, fps: 30, fourcc: "MJPG"},camera2: {type: opencv, index_or_path: "/dev/video0", width: 2560, height: 800, fps: 15, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_smoketest_smolvla_d_v1 \
+    --dataset.num_episodes=1 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/train/smoke/smolvla_d/checkpoints/last/pretrained_model \
+    --policy.empty_cameras=1 \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.compile_model=true
+
+## SMOLVLA-MD
+### Conversión de pesos
+python lerobot/scripts/convert_smolvla_to_smolvla_md.py \
+    --src lerobot/smolvla_base \
+    --dst outputs/smolvla_md_base
+
+### Training smoke
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+lerobot-train \
+    --policy.path=outputs/smolvla_md_base \
+    --dataset.repo_id=Esk1z0/tfm_final_dataset_120_eps_depth \
+    --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_120_eps_depth" \
+    --batch_size=4 \
+    --steps=10 \
+    --seed=42 \
+    --save_checkpoint=true \
+    --save_freq=5 \
+    --output_dir=outputs/train/smoke/smolvla_md \
+    --policy.device=cuda \
+    --policy.train_expert_only=true \
+    --policy.freeze_vision_encoder=true \
+    --policy.n_obs_steps=6 \
+    --policy.push_to_hub=false \
+    --policy.temporal_stride=1 \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.scheduler_decay_steps=10 \
+    --dataset.image_transforms.enable=false \
+    --wandb.enable=false
+### Inferencia smoke
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video2", width: 640,  height: 480, fps: 30, fourcc: "MJPG"},camera2: {type: opencv, index_or_path: "/dev/video0", width: 2560, height: 800, fps: 15, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_smoketest_smolvla_md_v1 \
+    --dataset.num_episodes=1 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/train/smoke/smolvla_md/checkpoints/last/pretrained_model \
+    --policy.empty_cameras=1 \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.compile_model=true
+
+
+## SmolVLA-D (depth + estereo, sin temporal)
+
+### Entrenamiento final
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+lerobot-train \
+    --policy.path=outputs/smolvla_d_base \
+    --dataset.repo_id=Esk1z0/tfm_final_dataset_120_eps_depth \
+    --dataset.root="/home/juanes/.cache/huggingface/lerobot/Esk1z0/tfm_final_dataset_120_eps_depth" \
+    --batch_size=16 \
+    --steps=90000 \
+    --seed=42 \
+    --save_checkpoint=true \
+    --save_freq=5000 \
+    --log_freq=50 \
+    --output_dir=outputs/train/smoke/smolvla_d_v1 \
+    --job_name=smolvla_d_v1 \
+    --policy.device=cuda \
+    --policy.train_expert_only=true \
+    --policy.freeze_vision_encoder=true \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.push_to_hub=false \
+    --policy.scheduler_decay_steps= \
+    --dataset.image_transforms.enable=true \
+    --wandb.enable=false \
+
+
+### Evaluación final con robot
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.id=tfm_so101_follower \
+    --robot.cameras='{camera1: {type: opencv, index_or_path: "/dev/video2", width: 640, height: 480, fps: 30, fourcc: "MJPG"},camera2: {type: opencv, index_or_path: "/dev/video0", width: 2560, height: 800, fps: 15, fourcc: "MJPG"}}' \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --teleop.id=tfm_so101_leader \
+    --teleop.calibration_dir="/home/juanes/.cache/huggingface/lerobot/calibration/teleoperators/so_leader" \
+    --display_data=false \
+    --dataset.repo_id=Esk1z0/eval_smolvla_d_v1 \
+    --dataset.num_episodes=10 \
+    --dataset.episode_time_s=120 \
+    --dataset.reset_time_s=30 \
+    --dataset.single_task="Put the stars in the bin and put the cubes on the marked area." \
+    --dataset.push_to_hub=false \
+    --dataset.streaming_encoding=false \
+    --dataset.encoder_threads=4 \
+    --dataset.vcodec=h264 \
+    --policy.path=outputs/train/smolvla_d_v1/checkpoints/last/pretrained_model \
+    --policy.empty_cameras=1 \
+    --policy.stereo_camera_keys='["observation.images.camera2"]' \
+    --policy.compile_model=true

@@ -1,9 +1,9 @@
 # TFM Model Family — Overview
 
-> **Last updated:** 2026-06-29
+> **Last updated:** 2026-07-01
 
 This document compares all four models built for the TFM:
-**vanilla SmolVLA** (baseline), **SmolVLA-M** (temporal memory), **SmolVLA-D** (stereo depth), and **SmolVLA-MD** (combined).
+**SmolVLA-Vanilla** (baseline + optional stereo crop), **SmolVLA-M** (temporal memory), **SmolVLA-D** (stereo depth), and **SmolVLA-MD** (combined).
 
 ---
 
@@ -15,7 +15,9 @@ This document compares all four models built for the TFM:
 
 ```mermaid
 graph TD
-    BASE["SmolVLA (vanilla)\nlerobot/smolvla_base\n• Single frame per camera\n• No depth\n• 500 M params total"]
+    BASE["SmolVLA (HF base)\nlerobot/smolvla_base\n• Single frame per camera\n• No depth\n• 500 M params total"]
+
+    BASE -->|"convert_smolvla_to_smolvla_vanilla.py\n+ stereo_camera_keys (right-eye crop)"| VANILLA["SmolVLA-Vanilla\n• Architecture-identical to base\n• Optional stereo crop\n• +0 params"]
 
     BASE -->|"convert_smolvla_to_smolvla_m.py\n+ TemporalSmolVLMEncoder\n+ 3 alpha scalars"| M["SmolVLA-M\n• K=6 temporal frames\n• Causal ViT attention\n• +3 params (alpha₀,₁,₂)"]
 
@@ -24,6 +26,7 @@ graph TD
     BASE -->|"convert_smolvla_to_smolvla_md.py\n+ TemporalEncoder + PointCloudEncoder\n+ DepthInjector"| MD["SmolVLA-MD\n• K=6 temporal frames\n• Stereo depth injection\n• ~560 K + 3 params"]
 
     style BASE fill:#ecf0f1,stroke:#95a5a6
+    style VANILLA fill:#f7f9f9,stroke:#7f8c8d
     style M fill:#fff8e6,stroke:#f0a500
     style D fill:#e8f4fd,stroke:#4a9eff
     style MD fill:#f5f0ff,stroke:#9b59b6
@@ -71,17 +74,17 @@ graph TD
 
 ## 3. Side-by-side feature comparison
 
-| Feature | SmolVLA (vanilla) | SmolVLA-M | SmolVLA-D |
-|---------|:-----------------:|:---------:|:---------:|
+| Feature | SmolVLA-Vanilla | SmolVLA-M | SmolVLA-D | SmolVLA-MD |
+|---------|:---------------:|:---------:|:---------:|:----------:|
 | **Temporal memory** | ✗ | ✓ K=6 frames | ✗ | ✓ K=6 frames |
-| **Stereo depth** | ✗ | ✗ | ✓ SGBM+WLS | ✓ SGBM+WLS |
-| **New parameters** | — | 3 scalars | ~560 K | ~560 K + 3 |
-| **New camera hardware** | — | None needed | SVPRO 2560×800 | SVPRO 2560×800 |
-| **Dataset compatible with vanilla** | ✓ | ✓ (n_obs=6) | ✗ (stereo cam) | ✗ (stereo cam) |
+| **Stereo depth** | ✗ (crop only) | ✗ | ✓ SGBM+WLS | ✓ SGBM+WLS |
+| **New parameters** | 0 | 3 scalars | ~560 K | ~560 K + 3 |
+| **New camera hardware** | optional (1 eye used) | None needed | SVPRO 2560×800 | SVPRO 2560×800 |
+| **Dataset compatible with base SmolVLA** | ✓ | ✓ (n_obs=6) | ✗ (stereo cam) | ✗ (stereo cam) |
 | **LLM token count** | 64×ncam | 64×ncam | 64×ncam | 64×ncam |
 | **ViT cost** | 1×B | K×B (6×) | 1×B | K×B (6×) |
-| **inference latency** | baseline | +ViT×6 | +SGBM ~2ms | +ViT×6 +SGBM |
-| **What it improves** | — | Long-horizon, occlusion | Precision grasping, depth | Both |
+| **Inference latency** | baseline | +ViT×6 | +SGBM ~2ms | +ViT×6 +SGBM |
+| **What it improves** | controlled baseline | Long-horizon, occlusion | Precision grasping, depth | Both |
 
 ---
 
@@ -227,6 +230,7 @@ lerobot-train \
 
 | Model | Architecture | Training guide |
 |-------|-------------|----------------|
+| SmolVLA-Vanilla | [smolvla_vanilla/architecture.md](smolvla_vanilla/architecture.md) | [smolvla_vanilla/training_guide.md](smolvla_vanilla/training_guide.md) |
 | SmolVLA-M | [smolvla_m/architecture.md](smolvla_m/architecture.md) | [smolvla_m/training_guide.md](smolvla_m/training_guide.md) |
 | SmolVLA-D | [smolvla_d/architecture.md](smolvla_d/architecture.md) | [smolvla_d/training_guide.md](smolvla_d/training_guide.md) |
 | SmolVLA-MD | [smolvla_md/architecture.md](smolvla_md/architecture.md) | [smolvla_md/training_guide.md](smolvla_md/training_guide.md) |
