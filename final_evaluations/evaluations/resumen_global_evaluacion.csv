@@ -1,0 +1,13 @@
+modelo,escenario,n_total,n_validos,puntuacion_media,puntuacion_normalizada_media,desviacion_estandar_normalizada,exitos_completos,tasa_exito,timeouts,intervenciones_emergencia,intentos_agarre_foto,tasa_rechazo_foto,tasa_recuerdo_ocluido,tasa_completado_ocluido
+evaluacion_d,combinado_con_foto,6,6,1.5,0.1154,0.1314,0,0.0,6,0,1.5,0.1667,0.1667,0.0
+evaluacion_d,combinado_sin_foto,6,6,9.5,0.8636,0.1364,3,0.5,3,0,,,1.0,1.0
+evaluacion_d,global,12,12,5.5,0.4895,0.3974,3,0.25,9,0,1.5,0.1667,0.5833,0.5
+evaluacion_m,combinado_con_foto,6,6,2.67,0.2051,0.0363,0,0.0,6,0,0.6667,0.6667,0.0,0.0
+evaluacion_m,combinado_sin_foto,6,6,6.5,0.5909,0.2611,1,0.1667,5,0,,,0.8333,0.5
+evaluacion_m,global,12,12,4.58,0.398,0.2682,1,0.0833,11,0,0.6667,0.6667,0.4167,0.25
+evaluacion_md,combinado_con_foto,6,6,0.5,0.0385,0.0385,0,0.0,0,6,0.8333,0.5,0.0,0.0
+evaluacion_md,combinado_sin_foto,6,6,0.83,0.0758,0.1103,0,0.0,2,4,,,0.1667,0.0
+evaluacion_md,global,12,12,0.67,0.0571,0.0847,0,0.0,2,10,0.8333,0.5,0.0833,0.0
+evaluacion_vanilla,combinado_con_foto,6,6,2.17,0.1667,0.1686,0,0.0,6,0,0.6667,0.5,0.3333,0.0
+evaluacion_vanilla,combinado_sin_foto,6,6,6.0,0.5455,0.3892,2,0.3333,4,0,,,0.5,0.5
+evaluacion_vanilla,global,12,12,4.08,0.3561,0.3547,2,0.1667,10,0,0.6667,0.5,0.4167,0.25

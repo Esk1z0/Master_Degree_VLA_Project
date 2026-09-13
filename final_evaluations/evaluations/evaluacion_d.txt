@@ -1,0 +1,118 @@
+
+
+Ir al contenido
+Uso de Gmail con lectores de pantalla
+1 de 3.898
+evaluacion modelo d
+Recibidos
+
+Juan Esteban Rincón Marín <j.esteban.rincon.m@gmail.com>
+Archivos adjuntos
+20:00 (hace 0 minutos)
+para mí
+
+
+ Un archivo adjunto
+  •  Analizados por Gmail
+# EVALUACION SMOLVLA-D
+
+BS = BLACK STAR
+OS = ORANGE STAR
+BC = BLACK CUBE
+OC = ORANGE CUBE
+
+## Prueba 0
+
+agarra del tiron las dos estrellas y las deja muy rapido en el cubilete
+el cubo naranja tambien lo coge y lo deja bien, del golpe se sale pero se lo doy por bueno
+todo perfecto todo
+
+## Prueba 1
+
+intenta coger la estrella negra y la abandona, falla, intenta coger la estrella naranja, falla, reintenta, falla reiteradamente
+ahora coge la estrella negra y lo deja bien
+reintenta la estrella naranja, la coge bien y la deja
+va apor el cubo naranja, falla, reintenta y lo coge bien, la deja bien
+alucina y termina el episodio sin terminar de ir a la estrella negra 
+
+## Prueba 2
+
+va apor la estrella negra y la coge bien y la deja bien
+alucina un poco al ir a por la estrella naranja, vale no, la coge bien, y la deja mal y se cae, la vuelve a coger bien y la deja bien ahora si
+vaa por  el cubo naranja y lo deja perfecto
+alucina con un objeto invisible en c3 durante un buen rato
+va a por el cubo negro, falla, alucina, vuelve a ir, lo coge mal, alucina, y termina el episodios sin acabar con el cubo negro
+
+## Prueba 3
+
+va a por la estrella negra ,falla, luego la coge bien y lo deja en el cubilete
+coge y deja bien la estrella naranja
+tambien deja bien el cubo negro
+va a por el cubo naranja y lo deja perfecto tambien
+acaba todo perfecto
+
+## Prueba 4
+
+va a por la estrella negra y lo hace perfecto al primer intento
+saca la estrella naranja fuera del espacio de trabajo y la abandona
+va a por el cubo naranja y en el segundo intento lo hace bien
+va a pr el cubo negro y lo clava, termina si la estrella naranja al sacarla del espacio de trabajo por cogerlo mal
+
+## Prueba 5
+
+va a por la estrella negra y falla, reintenta, la coge bien y la deja bien
+va ap or la estrella naranja y a la primera la coge y deja bien
+va a por el cubo negro, lo coge y deja bien
+va a por el cubo naranja y lo coge y deja bien
+alucina un poco y termina el episodio bien
+
+## Prueba 6
+
+va a por la foto, alucina mucho tiempo con la foto
+timeout, solo ha alucinado
+
+## Prueba 7
+
+va a por la foto, alucina con ella, alucina con un objeto invisible en B1
+alucina con la foto otra vez
+va a por la estrella, falla, alucina con un objeto en B1
+va a por la estrella negra, falla, alucina
+va a por la estrella, la mueve, falla, falla repetidamente
+va a por la foto
+timeout por alucinar con la foto
+
+## Prueba 8
+
+va a por la foto, va a por la estrella negra, falla, la mueve, alucina, va a por la foto repetidas veces
+
+timeout por no coger nada
+
+## Prueba 9
+
+va  por la foto, va a por la estrella negra, la coge y mete bien, alucina con un objeto en B1
+va a por la foto repetidas veces, va a por la estrella naranja, la coge bien y la deja
+alucina con algo en el C2
+Vuelve a ir a por la foto
+va a por el cubo naranja real, y falla, vuelve a por la foto del cubo naranja repetidas veces
+timeout sin el cubo naranja o negro
+
+
+## Prueba 10
+
+va a por la foto, va a por la estrella negra, falla, la coge bien y la deja bien al final
+va a por la estrella naranja, falla, alucina con un objeto en B1
+va apor la foto
+va a por la estrella naranja y falla bastante
+va a por la foto  y timeout
+
+## Prueba 11
+
+va a por la foto un par de veces
+va a por la estrella negra, falla, falla otra vez, alucina, falla otra vez y la mueve
+alucina, se obsesiona con la foto
+va a por la estrella naranja, falla, va a por la negra y falla otra vez y lamueve otra vez
+falla otra vez con la negra y la mueve, al final la coge y la deja mal, la deja fuera
+intenta coger otra vez la estrella negra, falla
+timeout
+evaluacion_smolvla_d.txt
+Mostrando evaluacion_smolvla_d.txt.

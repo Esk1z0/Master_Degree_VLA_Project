@@ -15,13 +15,14 @@ columna `modelo` -> "lyercut_range_7_8_9". Se normaliza aqui para que no
 aparezca como un modelo distinto en las graficas.)
 
 Salidas (en este mismo directorio):
-  01_ablacion_capa_unica_puntuacion.png
-  02_ablacion_capa_unica_exito.png
-  03_individual_vs_combinado.png
-  04_degradacion_no_lineal.png
-  05_curva_degradacion_capas.png
-  06_heatmap_config_capas_clave.png
-  07_modos_fallo_capas_clave.png
+  01_ablacion_capa_unica.png             (puntuacion y tasa de exito combinadas, una barra por capa)
+  01a_ablacion_capa_unica_puntuacion.png (variante: solo puntuacion, se conserva por si acaso)
+  01b_ablacion_capa_unica_exito.png      (variante: solo tasa de exito, se conserva por si acaso)
+  02_individual_vs_combinado.png
+  03_degradacion_no_lineal.png
+  04_curva_degradacion_capas.png
+  05_heatmap_config_capas_clave.png
+  06_modos_fallo_capas_clave.png
 
 Uso:
     cd <repo>/ablation/graphs
@@ -98,11 +99,11 @@ def bar_label(ax, bars, values, fmt="{:.2f}", dy=0.015):
         if np.isnan(v):
             continue
         ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + dy, fmt.format(v),
-                 ha="center", va="bottom", fontsize=8.5, fontweight="bold")
+                 ha="center", va="bottom", fontsize=11.5, fontweight="bold")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 1-2. Ablacion de capa unica: puntuacion y tasa de exito por capa (0..15)
+# 1. Ablacion de capa unica: puntuacion Y tasa de exito combinadas (0..15)
 # ══════════════════════════════════════════════════════════════════════════════
 
 def _critical_layers(df: pd.DataFrame, threshold: float = 0.28) -> set[int]:
@@ -115,7 +116,82 @@ def _critical_layers(df: pd.DataFrame, threshold: float = 0.28) -> set[int]:
     return set(means[means < threshold].index)
 
 
+def plot_single_layer_combined(df: pd.DataFrame, out_path: Path):
+    """Un unico grafico: por cada capa (Base + 0..15), dos barras en la misma columna
+    -- puntuacion normalizada media (solida) y tasa de exito completo (rayada) --
+    coloreadas segun la misma categoria de capa (base / inyeccion D-MD / critica / resto)."""
+    single = df[df["modelo"].apply(is_single_layer) | (df["modelo"] == "base")].copy()
+    single["layer"] = single["modelo"].apply(lambda m: -1 if m == "base" else layer_index(m))
+
+    score_stats = single.groupby("layer")["puntuacion_normalizada"].agg(["mean", "std"]).sort_index()
+    success_stats = single.groupby("layer")["exito_completo"].agg(["mean"]).sort_index()
+    critical = _critical_layers(df)
+
+    labels = ["Base"] + [f"Capa {i}" for i in score_stats.index if i >= 0]
+    colors = []
+    for i in score_stats.index:
+        if i < 0:
+            colors.append(COLOR_BASE)
+        elif i in INJECTION_LAYERS:
+            colors.append(COLOR_INJECTION)
+        elif i in critical:
+            colors.append(COLOR_CRITICAL)
+        else:
+            colors.append(COLOR_OTHER)
+
+    fig, ax = plt.subplots(figsize=(16, 6.8))
+    x = np.arange(len(score_stats))
+    w = 0.38
+    yerr = score_stats["std"].fillna(0).values
+
+    bars_score = ax.bar(x - w / 2, score_stats["mean"].values, w, yerr=yerr, capsize=3, color=colors,
+                         edgecolor="white", linewidth=0.8, error_kw=dict(elinewidth=1.0, ecolor="#333"))
+    bars_success = ax.bar(x + w / 2, success_stats["mean"].values, w, color=colors, alpha=0.55, hatch="//",
+                           edgecolor="white", linewidth=0.8)
+    bar_label(ax, bars_score, score_stats["mean"].values)
+    bar_label(ax, bars_success, success_stats["mean"].values)
+
+    base_score = score_stats.loc[-1, "mean"]
+    base_success = success_stats.loc[-1, "mean"]
+    ax.axhline(base_score, color=COLOR_BASE, linestyle="--", linewidth=1.1, alpha=0.55)
+    ax.axhline(base_success, color=COLOR_BASE, linestyle=":", linewidth=1.3, alpha=0.55)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=11.5)
+    ax.tick_params(axis="y", labelsize=11)
+    ax.set_ylabel("Valor (0-1)", fontsize=14)
+    ax.set_ylim(0, 1.12)
+    ax.set_title("Ablacion de CAPA UNICA del Action Expert -- puntuacion y tasa de exito por capa",
+                  fontsize=13.5, fontweight="bold")
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.grid(axis="y", alpha=0.3, linestyle="--")
+
+    category_handles = [
+        plt.Rectangle((0, 0), 1, 1, color=COLOR_BASE, label="Base (sin ablacion)"),
+        plt.Rectangle((0, 0), 1, 1, color=COLOR_INJECTION, label=f"Capas {INJECTION_LAYERS}: elegidas para inyeccion de profundidad (D / MD)"),
+        plt.Rectangle((0, 0), 1, 1, color=COLOR_CRITICAL, label="Capas criticas (degradacion severa al desactivarlas solas)"),
+        plt.Rectangle((0, 0), 1, 1, color=COLOR_OTHER, label="Resto de capas"),
+    ]
+    metric_handles = [
+        plt.Rectangle((0, 0), 1, 1, facecolor="#555", edgecolor="white", label="Columna izquierda: puntuacion normalizada media"),
+        plt.Rectangle((0, 0), 1, 1, facecolor="#555", edgecolor="white", alpha=0.55, hatch="//",
+                       label="Columna derecha (rayada): tasa de exito completo"),
+    ]
+    leg1 = ax.legend(handles=category_handles, loc="upper right", fontsize=11, framealpha=0.92,
+                      title="Categoria de capa", title_fontsize=11.5)
+    ax.add_artist(leg1)
+    ax.legend(handles=metric_handles, loc="upper right", bbox_to_anchor=(1.0, 0.74), fontsize=11,
+              framealpha=0.92, title="Que representa cada barra", title_fontsize=11.5)
+
+    plt.tight_layout()
+    fig.savefig(out_path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  -> {out_path}")
+
+
 def plot_single_layer(df: pd.DataFrame, metric: str, ylabel: str, title: str, out_path: Path, fmt="{:.2f}"):
+    """Variante de un solo panel (una metrica por grafico). Se conserva junto a la version combinada
+    (plot_single_layer_combined) por si se prefiere mostrar cada metrica por separado."""
     single = df[df["modelo"].apply(is_single_layer) | (df["modelo"] == "base")].copy()
     single["layer"] = single["modelo"].apply(lambda m: -1 if m == "base" else layer_index(m))
     stats = single.groupby("layer")[metric].agg(["mean", "std", "count"]).sort_index()
@@ -145,8 +221,9 @@ def plot_single_layer(df: pd.DataFrame, metric: str, ylabel: str, title: str, ou
                label=f"Base ({fmt.format(base_val)})")
 
     ax.set_xticks(x)
-    ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=9)
-    ax.set_ylabel(ylabel, fontsize=11)
+    ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=11.5)
+    ax.tick_params(axis="y", labelsize=11)
+    ax.set_ylabel(ylabel, fontsize=14)
     ax.set_ylim(0, 1.08)
     ax.set_title(title, fontsize=13.5, fontweight="bold")
     ax.spines[["top", "right"]].set_visible(False)
@@ -158,7 +235,7 @@ def plot_single_layer(df: pd.DataFrame, metric: str, ylabel: str, title: str, ou
         plt.Rectangle((0, 0), 1, 1, color=COLOR_CRITICAL, label="Capas criticas (degradacion severa al desactivarlas solas)"),
         plt.Rectangle((0, 0), 1, 1, color=COLOR_OTHER, label="Resto de capas"),
     ]
-    ax.legend(handles=legend_handles, loc="upper right", fontsize=8.8, framealpha=0.9)
+    ax.legend(handles=legend_handles, loc="upper right", fontsize=11.5, framealpha=0.9)
 
     fig.suptitle("Ablacion de CAPA UNICA del Action Expert (16 capas, una desactivada por ejecucion)",
                   fontsize=10.5, color="#555", y=0.965)
@@ -284,11 +361,12 @@ def plot_nonlinear_degradation(df: pd.DataFrame, out_path: Path):
         ax.annotate("", xy=(xi + w / 2, a + 0.02), xytext=(xi - w / 2, e + 0.02),
                     arrowprops=dict(arrowstyle="->", color=COLOR_CRITICAL, lw=1.6))
     ax.set_xticks(x)
-    ax.set_xticklabels(labels, fontsize=10)
+    ax.set_xticklabels(labels, fontsize=12.5)
+    ax.tick_params(axis="y", labelsize=11.5)
     ax.set_ylim(0, 0.75)
-    ax.set_ylabel("Puntuacion normalizada")
+    ax.set_ylabel("Puntuacion normalizada", fontsize=13)
     ax.set_title("Puntuacion: esperado vs. observado", fontsize=12.5, fontweight="bold")
-    ax.legend(fontsize=8.8, loc="upper right")
+    ax.legend(fontsize=11.5, loc="upper right")
     ax.spines[["top", "right"]].set_visible(False)
     ax.grid(axis="y", alpha=0.3, linestyle="--")
 
@@ -300,11 +378,12 @@ def plot_nonlinear_degradation(df: pd.DataFrame, out_path: Path):
     bar_label(ax, b1, expected_succ)
     bar_label(ax, b2, actual_succ)
     ax.set_xticks(x)
-    ax.set_xticklabels(labels, fontsize=10)
+    ax.set_xticklabels(labels, fontsize=12.5)
+    ax.tick_params(axis="y", labelsize=11.5)
     ax.set_ylim(0, 0.3)
-    ax.set_ylabel("Tasa de exito completo")
+    ax.set_ylabel("Tasa de exito completo", fontsize=13)
     ax.set_title("Tasa de exito: esperado vs. observado", fontsize=12.5, fontweight="bold")
-    ax.legend(fontsize=8.8, loc="upper right")
+    ax.legend(fontsize=11.5, loc="upper right")
     ax.spines[["top", "right"]].set_visible(False)
     ax.grid(axis="y", alpha=0.3, linestyle="--")
 
@@ -461,30 +540,33 @@ def main():
     df = load_data()
     print(f"  {len(df)} filas, modelos: {sorted(df['modelo'].unique())}\n")
 
-    print("[1/7] Ablacion de capa unica -- puntuacion ...")
+    print("[1/6] Ablacion de capa unica -- puntuacion + tasa de exito combinadas ...")
+    plot_single_layer_combined(df, HERE / "01_ablacion_capa_unica.png")
+
+    print("[1a/6] Variante: solo puntuacion (se conserva por si acaso) ...")
     plot_single_layer(df, "puntuacion_normalizada", "Puntuacion normalizada media",
                        "Puntuacion media al desactivar UNA capa del Action Expert (de 16)",
-                       HERE / "01_ablacion_capa_unica_puntuacion.png")
+                       HERE / "01a_ablacion_capa_unica_puntuacion.png")
 
-    print("[2/7] Ablacion de capa unica -- tasa de exito ...")
+    print("[1b/6] Variante: solo tasa de exito (se conserva por si acaso) ...")
     plot_single_layer(df, "exito_completo", "Tasa de exito completo",
                        "Tasa de exito completo al desactivar UNA capa del Action Expert (de 16)",
-                       HERE / "02_ablacion_capa_unica_exito.png")
+                       HERE / "01b_ablacion_capa_unica_exito.png")
 
-    print("[3/7] Individual (6-11) vs combinado (rangos) ...")
-    plot_individual_vs_combined(df, HERE / "03_individual_vs_combinado.png")
+    print("[2/6] Individual (6-11) vs combinado (rangos) ...")
+    plot_individual_vs_combined(df, HERE / "02_individual_vs_combinado.png")
 
-    print("[4/7] Degradacion no lineal (esperado vs observado) ...")
-    plot_nonlinear_degradation(df, HERE / "04_degradacion_no_lineal.png")
+    print("[3/6] Degradacion no lineal (esperado vs observado) ...")
+    plot_nonlinear_degradation(df, HERE / "03_degradacion_no_lineal.png")
 
-    print("[5/7] Curva de degradacion por capa ...")
-    plot_degradation_curve(df, HERE / "05_curva_degradacion_capas.png")
+    print("[4/6] Curva de degradacion por capa ...")
+    plot_degradation_curve(df, HERE / "04_curva_degradacion_capas.png")
 
-    print("[6/7] Heatmap de robustez por configuracion (capas clave) ...")
-    plot_heatmap_key_models(df, HERE / "06_heatmap_config_capas_clave.png")
+    print("[5/6] Heatmap de robustez por configuracion (capas clave) ...")
+    plot_heatmap_key_models(df, HERE / "05_heatmap_config_capas_clave.png")
 
-    print("[7/7] Modos de fallo (capas clave) ...")
-    plot_failure_modes_key_models(df, HERE / "07_modos_fallo_capas_clave.png")
+    print("[6/6] Modos de fallo (capas clave) ...")
+    plot_failure_modes_key_models(df, HERE / "06_modos_fallo_capas_clave.png")
 
     print("\nListo.")
 

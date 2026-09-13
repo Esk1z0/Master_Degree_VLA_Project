@@ -1,65 +1,225 @@
-# Repositorio TFM
+# SmolVLA-MD: Multimodal Enhancement & Layer Ablation in Vision-Language-Action Models for Robotic Manipulation
 
-Este repositorio contiene el código, datos y experimentos para el Trabajo de Fin de Máster (TFM) relacionados con el entrenamiento, ablación y evaluación del robot SO-101 usando modelos de Visión, Lenguaje y Acción (VLA).
+<div align="center">
 
-## Estructura de Directorios
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://python.org)
+[![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C.svg?logo=pytorch&logoColor=white)](https://pytorch.org)
+[![LeRobot](https://img.shields.io/badge/HuggingFace-LeRobot-FFD21E.svg?logo=huggingface&logoColor=black)](https://github.com/huggingface/lerobot)
+[![Master Thesis EN](https://img.shields.io/badge/Master's%20Thesis-English%20PDF-green.svg)](docs/SmolVLA_MD_Master_Thesis_EN.pdf)
+[![Master Thesis ES](https://img.shields.io/badge/TFM-Espa%C3%B1ol%20PDF-green.svg)](docs/SmolVLA_MD_Master_Thesis_ES.pdf)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-La estructura está diseñada para mantener organizado el código finalizado, los scripts de prueba y la documentación.
+[📄 Master's Thesis (English)](docs/SmolVLA_MD_Master_Thesis_EN.pdf) •
+[📄 Trabajo Fin de Máster (Español)](docs/SmolVLA_MD_Master_Thesis_ES.pdf) •
+[📊 Benchmark Results](final_evaluations/) •
+[🧪 Layer Ablation Study](ablation/) •
+[📷 Camera Calibration](camera/)
 
-- `ablation/`: Scripts y utilidades para el estudio de ablación (ej. desactivación de capas en SmolVLA, tests de cortes).
-- `camera/`: Jupyter notebooks y datos matriciales (`calib_stereo.npz`) para la calibración y prueba de las cámaras.
-- `data/layouts/`: Contiene los archivos CSV que definen los layouts para el robot y evaluación.
-- `docs/`: Rúbricas de evaluación, historial de comandos, reportes de hiperparámetros de entrenamiento y checklists de verificación.
-- `scripts/`: Scripts utilitarios (ej. cálculo de puntuaciones de evaluación).
-- `wip/`: (No rastreada por Git) Carpeta de "Work in Progress" para pruebas rápidas y archivos sin terminar.
-- `outputs/` y `results/`: (No rastreadas por Git) Estas carpetas almacenan localmente los pesos, videos y configuraciones generados por LeRobot y wandb durante las ejecuciones, evitando saturar el repositorio.
+</div>
 
-## Datos y Modelos (HuggingFace)
+---
 
-Dado el tamaño de los datasets y los pesos del modelo, estos se alojan en HuggingFace.
+## 🌟 Executive Summary
 
-- **Datasets:** [Enlace a tu Dataset en HuggingFace]
-- **Modelos:** [Enlace a tu Modelo en HuggingFace]
+Standard Vision-Language-Action (VLA) models excel at generalist robotic task execution but rely heavily on 2D monocular RGB observations. Consequently, current policies are vulnerable to **3D spatial ambiguity**, **temporal visual occlusions**, and **2D printed photo distractors**.
 
-*(Reemplaza los enlaces anteriores con tus URLs reales)*
+**SmolVLA-MD** is an advanced multimodal VLA architecture and empirical research project designed to overcome these limitations on low-cost physical robotic hardware (**SO-101** 6-DoF arm).
 
-## Entrenamiento y Reportes (Weights & Biases)
+### Key Research Contributions
 
-El seguimiento de los experimentos y el registro de métricas de entrenamiento están disponibles en Weights & Biases:
+1. 🔬 **Systematic Action Expert Layer Ablation:** Empirical study across **21 model configurations** (315 physical robot evaluation runs), mapping structural sensitivity across SmolVLA's 16 Action Expert layers. We identified **layers 6–8** as the optimal, non-destructive target window for injecting new sensory modalities.
+2. 👁️ **SmolVLA-D (Stereo Depth Injection):** Injection of 3D depth point cloud representations into layers 6–8 via residual cross-attention adapters. SmolVLA-D achieves a **0.864 normalized score** on physical hardware in non-distractor tasks (**+58.5% improvement over baseline SmolVLA**).
+3. 🧠 **SmolVLA-M (Temporal Visual Memory):** Causal temporal visual memory mechanism ($K=6$ frames) designed to track object states and locations under partial or full occlusions.
+4. 🤖 **Physical Benchmark Suite:** Rigorous 12-scenario real-world evaluation benchmark testing 2D visual distractors (real vs. photographed objects), occlusions, and position shifts on physical hardware.
 
-- **Proyecto WandB:** [Enlace a tu proyecto o reportes en WandB]
+---
 
-## Modificaciones a `lerobot` (Instrucciones)
+## 🏗️ Model Architecture Overview
 
-La librería subyacente `lerobot` ha sido modificada en este entorno para corregir problemas de grabación (códecs de vídeo) y adaptar la ejecución al entorno del TFM.
+SmolVLA-MD introduces modular visual and spatial adaptations to the base SmolVLM2 / SmolVLA architecture without sacrificing pre-trained visual-language weights.
 
-Dado que actualmente la carpeta `lerobot` tiene modificaciones sin rastrear en un repositorio padre, **debes seguir estos pasos para integrarlo correctamente a GitHub como un submódulo**:
+### Model Family Breakdown
 
-1. **Crear un Fork en GitHub:**
-   Entra a [HuggingFace LeRobot en GitHub](https://github.com/huggingface/lerobot) y pulsa en "Fork" para clonarlo a tu cuenta personal (`tu-usuario/lerobot`).
+```mermaid
+graph TD
+    BASE["SmolVLA Base (HuggingFace)\n• 500M Params\n• Monocular RGB Observation"]
 
-2. **Subir tus Cambios a tu Fork:**
-   Abre una terminal, entra en la carpeta `lerobot` local y empuja tus cambios a tu nuevo repositorio:
-   ```bash
-   cd lerobot
-   git remote set-url origin https://github.com/tu-usuario/lerobot.git
-   git add .
-   git commit -m "Añadidas modificaciones para TFM (códecs, calibración, etc)"
-   git push origin main
-   ```
+    BASE -->|"Baseline Crop"| VANILLA["SmolVLA-Vanilla\n• Architecture-identical to base\n• Dual camera inputs\n• 500M params"]
+    BASE -->|"+ Temporal Visual Memory"| M["SmolVLA-M\n• K=6 frame history\n• Causal ViT attention\n• +3 params (α scalar adapters)"]
+    BASE -->|"+ Stereo Depth Injection (Layers 6-8)"| D["SmolVLA-D\n• Stereo depth (SGBM + WLS)\n• Cross-attention depth adapters\n• +560K params"]
+    BASE -->|"+ Memory + Depth Injection"| MD["SmolVLA-MD\n• Temporal history + 3D depth\n• Dual modular adapters\n• ~560K + 3 params"]
 
-3. **Registrar el Submódulo en el Repositorio Principal (TFM):**
-   Vuelve a la carpeta raíz del TFM y vincula oficialmente tu fork:
-   ```bash
-   cd ..
-   # Desvincula la referencia actual a lerobot (sin borrar la carpeta)
-   git rm --cached lerobot
-   
-   # Añade el submódulo oficial apuntando a tu URL
-   git submodule add https://github.com/tu-usuario/lerobot.git lerobot
-   
-   git add .gitmodules lerobot
-   git commit -m "Configurado submódulo lerobot apuntando a mi fork modificado"
-   ```
+    style BASE fill:#f0f4f8,stroke:#94a3b8,stroke-width:2px
+    style VANILLA fill:#f8fafc,stroke:#64748b,stroke-width:2px
+    style M fill:#fffbe6,stroke:#d97706,stroke-width:2px
+    style D fill:#eff6ff,stroke:#2563eb,stroke-width:2px
+    style MD fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px
+```
 
-A partir de este momento, cuando subas tus cambios a GitHub, el código en `lerobot` apuntará directamente a tu versión arreglada.
+| Variant | Added Parameters | Observation Input | Key Architectural Feature | Target Problem |
+|---|---|---|---|---|
+| **SmolVLA-Vanilla** | $+0$ | Monocular/Stereo RGB | Standard SmolVLM2 + Action Expert | Baseline Reference |
+| **SmolVLA-M** | $+3$ | RGB History ($K=6$) | Causal ViT temporal visual memory | Partial Occlusions |
+| **SmolVLA-D** | $+560\text{ K}$ | RGB + Stereo Depth | Layers 6–8 Cross-Attention Adapter | 3D Spatial Ambiguity |
+| **SmolVLA-MD** | $+560.003\text{ K}$ | RGB History + Stereo Depth | Temporal Memory + Depth Injection | Occlusions + 3D Depth |
+
+---
+
+## 🧪 Action Expert Layer Ablation Study
+
+To determine where to integrate 3D depth representations without degrading pre-trained action knowledge, we conducted a systematic **Action Expert Layercut** study on the 16 layers of the transformer.
+
+```
+Action Expert Structural Sensitivity Map (16 Layers):
+┌───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┐
+│ L0    │ L1    │ L2    │ L3    │ L4    │ L5    │ L6    │ L7    │ L8    │ L9    │ L10   │ L11   │ L12   │ L13   │ L14   │ L15   │
+├───────┼───────┴───────┴───────┼───────┼───────┼───────┴───────┴───────┼───────┼───────┼───────┼───────┼───────┴───────┼───────┤
+│ Entry │   CRITICAL (1-3)      │ Inter │ Crit  │ TOLERANT WINDOW (6-8) │ Trans │ Trans │ Inter │ Trans │ CRITICAL(13-14│ Exit  │
+└───────┴───────────────────────┴───────┴───────┴───────────────────────┴───────┴───────┴───────┴───────┴───────────────┴───────┘
+                                                ▲ Target Residual Injection Window (SmolVLA-D)
+```
+
+### Critical vs. Tolerant Layer Map
+
+- **Critical Structural Layers (1, 2, 3, 5, 13, 14):** Ablating any of these layers independently causes policy collapse ($\text{score} \le 0.26 / 1.0$, $0\%$ complete success rate).
+- **Tolerant Layer Window (6, 7, 8):** Layers 6, 7, and 8 tolerate individual disabling best (scores 0.533–0.613), forming a contiguous plateau suitable for **residual cross-attention depth injection**.
+
+---
+
+## 📊 Physical Hardware Benchmark Results
+
+The four model variants were evaluated on the physical **SO-101** robotic arm across **12 controlled real-world benchmark scenarios** involving object sorting, 2D photograph distractors, and workspace occlusions.
+
+### Summary Performance Table
+
+| Model | Global Normalized Score | Score (No Distractor) | Score (With 2D Photo Distractor) | Complete Task Success Rate | Uncontrolled Emergency Halts |
+|---|---|---|---|---|---|
+| **SmolVLA-Vanilla** | 0.356 | 0.545 | 0.167 | 2 / 12 (16.7%) | 0 / 12 |
+| **SmolVLA-M** | 0.398 | 0.591 | 0.205 | 1 / 12 (8.3%) | 0 / 12 |
+| **SmolVLA-D** | **0.490** | **0.864** | 0.115 | **3 / 12 (25.0%)** | 0 / 12 |
+| **SmolVLA-MD** | 0.057 | 0.076 | 0.038 | 0 / 12 (0.0%) | 10 / 12 |
+
+> 📌 **Key Takeaway:** **SmolVLA-D** achieves peak performance in standard physical manipulation tasks (**0.864 score, 50% perfect success rate**). However, 2D photograph distractors remain an architectural challenge for all current VLA baselines, highlighting critical avenues for future research.
+
+---
+
+## 🦾 Hardware & Sensor Setup
+
+The physical experimental platform consists of:
+- **Follower Arm:** 6-DoF SO-101 robotic arm driven by Feetech STS3215 serial bus servos.
+- **Leader Arm:** 6-DoF SO-101 teleoperation interface for demonstration collection.
+- **Stereo Camera Rig:** Dual USB camera system calibrated via OpenCV SGBM+WLS (`camera/calib_stereo.npz`).
+- **Overhead Camera:** Overhead workspace context USB camera providing global scene views.
+
+---
+
+## 📂 Repository Structure
+
+```
+.
+├── README.md                      # Main visual presentation & project documentation
+├── docs/                          # Official Master's Thesis documents (EN & ES)
+│   ├── SmolVLA_MD_Master_Thesis_EN.pdf
+│   └── SmolVLA_MD_Master_Thesis_ES.pdf
+├── ablation/                      # Layer ablation study scripts, notebooks & data
+│   ├── EXPERIMENT_REPORT.md       # Technical report in English
+│   ├── EXPERIMENT_REPORT_ES.md    # Technical report in Spanish
+│   └── evaluations/               # Raw evaluation logs (21 models)
+├── final_evaluations/             # Robot evaluation logs, scoring scripts & CSVs
+│   ├── EXPERIMENT_REPORT.md       # Technical report in English
+│   ├── EXPERIMENT_REPORT_ES.md    # Technical report in Spanish
+│   └── evaluations/               # Raw execution logs per model
+├── camera/                        # Stereo camera calibration scripts & .npz matrices
+│   ├── CAMERA_SETUP.md            # Camera setup & calibration guide
+│   ├── stereo_calibration.py      # Automated calibration script
+│   └── calib_stereo.npz           # Production stereo matrices
+├── data/                          # Workspace layout definitions & calibration data
+│   ├── DATA_ORGANIZATION.md       # Data guide
+│   ├── camera_calibration/        # Stereo calibration datasets
+│   └── layouts/                   # Balanced episode layout definitions
+├── lerobot/                       # Custom LeRobot submodule fork with SmolVLA-MD integration
+└── scripts/                       # Reusable utility scripts
+    └── SCRIPTS_GUIDE.md
+```
+
+---
+
+## 🚀 Quickstart & Reproduction Guide
+
+### 1. Installation
+
+Clone the repository with submodules:
+```bash
+git clone --recursive https://github.com/your-username/Master_Degree_VLA_Project.git
+cd Master_Degree_VLA_Project
+```
+
+Set up the virtual environment:
+```bash
+# Using uv (recommended)
+uv venv .venv
+source .venv/bin/activate
+
+# Install LeRobot in editable mode
+pip install -e lerobot/
+```
+
+### 2. Stereo Camera Calibration
+
+To calibrate the dual USB camera setup and save parameters:
+```bash
+cd camera
+python stereo_calibration.py --output calib_stereo.npz
+```
+
+### 3. Layer Ablation Study
+
+To inspect the Action Expert layercut results or generate custom layercut checkpoints:
+```bash
+python ablation/prepare_layercut_checkpoint.py \
+    --model_id lerobot/smolvla_base \
+    --layers 6 7 8 \
+    --output_dir outputs/layercut_6_7_8
+```
+
+### 4. Policy Evaluation on Hardware
+
+To launch physical policy evaluation on the SO-101 robot arm:
+```bash
+python lerobot/lerobot/scripts/eval.py \
+    --policy.path outputs/smolvla_d \
+    --robot.type so101 \
+    --depth_calib_path camera/calib_stereo.npz
+```
+
+---
+
+## 📊 Datasets & Model Checkpoints (Transparency Notice)
+
+> 🔒 *Raw dataset recordings and model checkpoints are configured for reproducible audit.*
+
+- **HuggingFace Datasets:** `[HuggingFace Dataset Repository Placeholder]` *(e.g., `https://huggingface.co/datasets/your-username/so101-smolvla-md`)*
+- **HuggingFace Model Weights:** `[HuggingFace Model Checkpoints Placeholder]` *(e.g., `https://huggingface.co/your-username/smolvla-d-so101`)*
+
+---
+
+## 📖 Citation & Master's Thesis
+
+If you use this codebase, layer ablation methodology, or hardware benchmark protocols in your research, please cite the Master's Thesis:
+
+```bibtex
+@mastersthesis{SmolVLAMD2026,
+  author       = {Juan Espejo},
+  title        = {SmolVLA-MD: Multimodal Enhancement (Depth and Temporal Memory) and Layer Ablation in Vision-Language-Action Models for Robotic Manipulation with SO-101},
+  school       = {Master's Degree Program in Robotics and Artificial Intelligence},
+  year         = {2026},
+  type         = {Master's Thesis},
+  note         = {Available in repository under docs/SmolVLA_MD_Master_Thesis_EN.pdf}
+}
+```
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ for Robotics and AI Research • Powered by HuggingFace LeRobot & SO-101 Hardware</sub>
+</div>

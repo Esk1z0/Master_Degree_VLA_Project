@@ -8,7 +8,7 @@ import sys
 import os
 
 IMAGE_PATH = sys.argv[1] if len(sys.argv) > 1 else \
-    os.path.join(os.path.dirname(__file__), "../data/new_new_cam_calibration_imgs/photo_1.jpeg")
+    os.path.join(os.path.dirname(__file__), "../data/camera_calibration/session_3_active/photo_1.jpeg")
 
 img = cv2.imread(IMAGE_PATH)
 if img is None:

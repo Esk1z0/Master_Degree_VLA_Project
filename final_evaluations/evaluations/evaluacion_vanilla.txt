@@ -1,0 +1,110 @@
+
+
+Ir al contenido
+Uso de Gmail con lectores de pantalla
+1 de 3.895
+vanilla evaluacino final
+Recibidos
+
+Juan Esteban Rincón Marín <j.esteban.rincon.m@gmail.com>
+Archivos adjuntos
+2:41 (hace 0 minutos)
+para mí
+
+
+ Un archivo adjunto
+  •  Analizados por Gmail
+# EVALUACION VANILLA
+
+BS = BLACK STAR
+OS = ORANGE STAR
+BC = BLACK CUBE
+OC = ORANGE CUBE
+
+## Prueba 0
+
+coge y deja bien la estrella negra y naranja de primeras, luego coge bien el cubo naranja
+luego se pierde con el cubo negro y procede a halucinar con objetos inexistentes, termina el episodio sin el cubo negro
+
+## Prueba 1
+
+intenta agarra la estrella negra, falla a la primera y rapidamente la coge bien y la guarda bien
+falla al coger la estrella naranja, intenta dejarla en el cubilete y luego si lo hace bien el proceso entero
+Luego coge y deja bien la estrella naranja a la primera
+Halucina un poco antes de coger la estrella negra, luego lo intenta, falla, y vuelve a halucinar y busca objetos donde no hay
+no coge el cubo negro
+
+## Prueba 2
+
+intenta coger la estrella negra y falla, falla dos veces, 3, halucina, al final lo consigue y la deja bien
+halucina un poco al coger la estrella naranja, halucina que la ha cogido, la termina cogiendo bien y la deja bien
+ahora va a por el cubo negro pero falla y halucina un pcoo, luego coge el cubo naranja y lod eja bien
+ahora halucina un monton, intenta coger el cubo negro, lo hace y lo deja bien, termina perfect
+
+## Prueba 3
+
+va a por la estrella negra, falla, recoloca, falla, halucina y lo vuelve a intentar en bucle, muchos intentos salen de intentar agarrarlo bien y fallar
+abandona el cubo negro e intenta coger la estrella naranja, falla, halucina, falla y no se decide entre una estrella y la otra.
+termina sin nada
+
+## Prueba 4
+
+va a por la estrella negra, la coge bien y la deja bien, va a por la estrella naranja y la mueve  fuera del espacio de trabajo, y sigue intentandolo cogerla
+halucina un monton al intentar coger la estrella naranja termina el episodio con solo la estrella negra bien
+
+## Prueba 5
+
+estrella negra perfecta, la naranja tambien
+intenta coger algun cubo, no esta claro y falla, intetna coger el naranja y falla
+coge el cubo negro bien y lo deja bien, falla al intentar hacerlo con el cubo naranja
+va moviendo el cubo naranja en sus fallos hasta que lo coge bien y lo deja perfe y termina bien
+
+
+
+## Prueba 6
+
+ve la foto y va directo a cogerla, luego pasa de ella e intenta coger alguna estrella
+va a por la estrella negra y falla varias veces
+halucina bastante con la estrella negra y falla varias veces
+intenta ir a por la estrella naranja, falla, vuelve a por la estrella negra y falla, la mueve por quinta vez
+intenta coger la foto repetidas veces, termina sin conseguir nada
+
+## Prueba 7
+
+va a por la foto repetidas veces
+va a por la estrella negra y falla
+reintenta ir apor la foto varias veces
+halucina al coger objetos imposibles
+vuelve a ir a por la foto
+no hace nada
+
+## Prueba 8
+
+va a por la foto, halucina, va a por la estrella negra y falla bastante, no se a donde mira la camara la verdad
+falla varios agarres de la estrella negra y vuelve a ir a por la foto, que falla estrepitosamente
+coge bien la estrella negra y la deja bien
+halucina, termina
+
+## Prueba 9
+
+va a por la foto repetidamente
+renuncia a la foto, agarra la estrella negra y la deja bien
+va a por la estrella  naranja, falla, la coge bien, la suelta luego y reintenta cogerla, la coge bien y la deja bien
+va a por el cubo naranja, falla, va a por el cubo negro ahora y termina el episodio sin los cubos
+
+## Prueba 10
+
+va a por la foto, halucina un rato, vuelve a ir a por la foto repetidamente
+va a por la estrella negra, falla, vuelve, falla, halucina y va a por la foto, no se si es la foto la que lo rompe
+se queda con la foto hasta acabar el episodio
+
+## Prueba 11
+
+va a por la foto directamente, y reintenta repetidamente ir a por ella
+coge bien la estrella negra y la deja, luego halucina un rato y va a por la foto
+va a por la estrella naranja y falla estrepitosamente y la saca del espacio de trabajo
+halucina al intentar coger el cubo naranja
+termina sin nada
+
+evaluacion_vanilla.txt
+Mostrando evaluacion_vanilla.txt.

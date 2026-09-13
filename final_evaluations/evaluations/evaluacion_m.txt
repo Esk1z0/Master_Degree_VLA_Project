@@ -1,0 +1,107 @@
+
+
+Ir al contenido
+Uso de Gmail con lectores de pantalla
+1 de 3.897
+evaluacion modelo m
+Recibidos
+
+Juan Esteban Rincón Marín <j.esteban.rincon.m@gmail.com>
+Archivos adjuntos
+17:44 (hace 0 minutos)
+para mí
+
+
+ Un archivo adjunto
+  •  Analizados por Gmail
+# EVALUACION SMOLVLA-M
+
+BS = BLACK STAR
+OS = ORANGE STAR
+BC = BLACK CUBE
+OC = ORANGE CUBE
+
+## Prueba 0
+
+agarra bien la estrella negra del tiron yla deja bien
+intenta coger la estrella naranja y falla un poco, termina agarrandola y dejandola bien
+va a por los cubos, falla, halucina  con objetos invisibles
+va a por el cubo naranja, falla, halucina, va a por ella varias veces y falla
+termina sin agarrar los cubos pero si intentandolo
+
+## Prueba 1
+
+agarra bien la estrella negra de primeras, la naranja tambien y ambas las mete bien en un solo intento
+se gira hacia los cubos y falla, halucina durante un rato antes de reintentar coger los cubos
+finalmente agarra bien el cubo naranja y lo deja bien en la zona
+intenta coger el cubo negro y falla, halucina un rato buscando objetos inexistentes y termina el episodio el robot sin intentar coger el cubo negro
+termina con todos menos el cubo negro
+
+## Prueba 2
+
+agarra bien la estrella negra a la primera y la deja bien
+falla al coger la estrella naranja varias veces y la mueve repetidas veces sin llegar a cogerla bien
+halucina y termina el episodio solo con la estrella negra
+
+## Prueba 3
+
+coge la estrella negra y la deja perfecta, la estrella naranja tambien, y luego el cubo tambien perfecto sin ninguna falla
+ahora va a por el cubo negro, falla, halucina, mira un rato alrededor halucinando los objetos, intenta coger el objeto invisible en c3
+termina sin coger y deja el cubo negro
+
+## Prueba 4
+
+coge la estrella negra a la primera y la deja
+vuelve a coger la estrella naranja perfecta a la primera
+coge perfecto el cubo naranja a la primera
+agarra el cubo negro a la primera y termina perfecto
+
+## Prueba 5
+
+va a coger la estrella negra, falla la primera vez y a la segunda lo coge y lo deja perfecto
+va a por la estrella naranja, falla un poco, la mueve bastante, la termina cogiendo y la deja bien
+va a por los cubos naranja y falla
+halucina bastante un objeto en el medio y junto al cubilete donde se dejan las estrellas
+halucina bastante y termina sin los cubos
+
+## Prueba 6
+
+va a por la foto, luego va a por la estrella negra, la coge y la deja bien
+luego va a por la estrella naranja, falla bastante al cogerla, la mueve bastante, a una posicion suboptima
+ahora va apor un objeto invisible, halucina bastante, se queda agarrando la nada hasta el final
+
+## Prueba 7
+
+va a por la foto, un par de veces, halucina bastante, va a por la estrella negra, falla, al estar cerca la foto de la estrella  halucina bastatne un objeto en medio
+va a por la foto otra vez, coge la estrella negra y la deja bien
+va a por la estrella naranja, falla, reintenta varias veces, la mueve, falla, reintenta, falla, termina solo con la estrella negra
+
+
+## Prueba 8
+
+va a por la foto, luego va a por la estrella, falla, halucina, la coge bien y la deja bien en el cubilete
+va a por la estrella naranja, falla bastante, la coge y se le esvcapa, reintenta, reintenta, falla, halucina? no esta claro si falla o esta halucinando el modelo
+halucina, va a por un objeto invisible en B2, ahora va a por la estrella naranja y la suelta nuevamente, halucina otra vez termina solo con la estrella negra bien
+
+## Prueba 9
+
+va a por la foto, luego va a por la estrella negra, lo deja bien
+halucina bastante al intentar coger la foto nuevamente
+se queda clavado con la foto un rato
+halucina ahora con un objeto en medio de la escena
+temina solo con la estrella negra bien
+
+
+## Prueba 10
+
+va a por la foto, halucina cogiendo la foto, va a por una estrella, halucina yendose hacia la foto, falla
+va a por la estrella naranja, falla al cogerla, halucina con los objetos, luego intenta ir a por la estrella negra, falla varias veces halucinando que las ha cogido, la termina cogiendo y la deja bien
+halucina un objeto invisible, termina solo con la estrella negra
+
+## Prueba 11
+
+va a por la foto de primeras, va a por la estrella negra a la primera y lo clava, la coge y la deja bien
+luego va  apor la estrella naranja, falla, recalibra, falla, halucina con un objeto invisible
+va a por la foto nuevamente, halucina, vuelve a ir a por la estrella naranja y falla, termina solo con la estrella negra bien
+evaluacion_smolvla_m.txt
+Mostrando evaluacion_smolvla_m.txt.

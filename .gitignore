@@ -1,8 +1,9 @@
-data/cam_calibration_imgs/
-data/new_cam_calibration_imgs/
-data/new_new_cam_calibration_imgs/
+data/camera_calibration/session_1_20260428/
+data/camera_calibration/session_2_20260505/
+data/camera_calibration/session_3_active/
 
 # Carpetas de resultados y salidas locales pesadas
+assets/
 outputs/
 results/
 wip/

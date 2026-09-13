@@ -35,8 +35,8 @@ def procesar_archivo(file_path):
             'estrella_negra_agarre', 'estrella_negra_destino', 'estrella_naranja_agarre', 'estrella_naranja_destino',
             'cubo_negro_agarre', 'cubo_negro_destino', 'cubo_naranja_agarre', 'cubo_naranja_destino',
             'finalizacion_limpia', 'recuerda_objeto_ocluido', 'completa_objeto_ocluido',
-            'selecciona_real_antes_foto', 'evita_intento_agarre_foto', 'aproximaciones_foto', 'intentos_agarre_foto',
-            'tiempo_total_s', 'timeout', 'intervencion_emergencia'
+            'selecciona_real_antes_foto', 'evita_intento_agarre_foto', 'intentos_agarre_foto',
+            'timeout', 'intervencion_emergencia'
         ]
         missing_cols = [c for c in required_cols if c not in reader.fieldnames]
         if missing_cols:
@@ -50,9 +50,9 @@ def procesar_archivo(file_path):
             objeto_visible_inicio = safe_float(row.get('objeto_visible_inicio'))
             oclusion_verificada = safe_float(row.get('oclusion_verificada'))
             
-            # Validez del registro
+            # Validez del registro (la oclusion se da en los 12 episodios, con o sin foto)
             registro_valido = 0
-            if escenario in ['autooclusion', 'combinado']:
+            if escenario in ('combinado_con_foto', 'combinado_sin_foto'):
                 if setup_validado == 1 and objeto_visible_inicio == 1 and oclusion_verificada == 1:
                     registro_valido = 1
             else:
@@ -75,16 +75,16 @@ def procesar_archivo(file_path):
             puntuacion_destreza = sum([1 if safe_float(row.get(c)) == 1 else 0 for c in destreza_cols])
             max_destreza = 9
             
-            # Memoria
-            if escenario in ['autooclusion', 'combinado']:
+            # Memoria (aplica en los 12 episodios: la oclusion no depende de si hay foto)
+            if escenario in ('combinado_con_foto', 'combinado_sin_foto'):
                 puntuacion_memoria = sum([1 if safe_float(row.get(c)) == 1 else 0 for c in ['recuerda_objeto_ocluido', 'completa_objeto_ocluido']])
                 max_memoria = 2
             else:
                 puntuacion_memoria = 0
                 max_memoria = 0
             
-            # 3D (Fotografía)
-            if escenario in ['fotografia', 'combinado']:
+            # 3D (Fotografia) — solo en la mitad de episodios que llevan foto
+            if escenario == 'combinado_con_foto':
                 puntuacion_3d = sum([1 if safe_float(row.get(c)) == 1 else 0 for c in ['selecciona_real_antes_foto', 'evita_intento_agarre_foto']])
                 max_3d = 2
             else:
@@ -125,8 +125,6 @@ def procesar_archivo(file_path):
                 'exito_completo': exito_completo,
                 'timeout': timeout,
                 'intervencion_emergencia': intervencion_emergencia,
-                'tiempo_total_s': safe_float(row.get('tiempo_total_s')),
-                'aproximaciones_foto': safe_float(row.get('aproximaciones_foto')),
                 'intentos_agarre_foto': safe_float(row.get('intentos_agarre_foto')),
                 'evita_intento_agarre_foto': safe_float(row.get('evita_intento_agarre_foto')),
                 'recuerda_objeto_ocluido': safe_float(row.get('recuerda_objeto_ocluido')),
@@ -157,7 +155,9 @@ def generar_resumen(all_results, output_dir):
     """Calcula estadísticas y genera el resumen global cuando hay varios modelos."""
     summary_rows = []
     models = sorted(list(set([r['modelo'] for r in all_results])))
-    escenarios = ['destreza_general', 'autooclusion', 'fotografia', 'combinado']
+    # Diseño simplificado (ver DISENO_EVALUACION.md): mismo layout combinado en los 12 episodios,
+    # la mitad con foto y la mitad sin, para evitar que la foto sature/rompa el resultado global.
+    escenarios = ['combinado_con_foto', 'combinado_sin_foto']
     
     for model in models:
         model_results = [r for r in all_results if r['modelo'] == model]
@@ -191,24 +191,18 @@ def generar_resumen(all_results, output_dir):
                 timeouts = sum([r['timeout'] for r in rows])
                 intervenciones_emergencia = sum([r['intervencion_emergencia'] for r in rows])
                 
-                tiempos = [r['tiempo_total_s'] for r in valid_rows if r['tiempo_total_s'] is not None]
-                tiempo_medio_s = sum(tiempos) / len(tiempos) if tiempos else None
-                
-                # Métricas 3D
-                if esc in ['fotografia', 'combinado', 'global']:
-                    aprox = [r['aproximaciones_foto'] for r in valid_rows if r['aproximaciones_foto'] is not None]
-                    aproximaciones_foto = sum(aprox) / len(aprox) if aprox else None
-                    
+                # Métricas 3D — solo tienen sentido en los episodios con foto (+ global)
+                if esc in ['combinado_con_foto', 'global']:
                     intentos = [r['intentos_agarre_foto'] for r in valid_rows if r['intentos_agarre_foto'] is not None]
                     intentos_agarre_foto = sum(intentos) / len(intentos) if intentos else None
-                    
+
                     evitas = [r['evita_intento_agarre_foto'] for r in valid_rows if r['evita_intento_agarre_foto'] is not None]
                     tasa_rechazo_foto = sum(evitas) / len(evitas) if evitas else None
                 else:
-                    aproximaciones_foto = intentos_agarre_foto = tasa_rechazo_foto = None
+                    intentos_agarre_foto = tasa_rechazo_foto = None
                     
-                # Métricas memoria
-                if esc in ['autooclusion', 'combinado', 'global']:
+                # Métricas memoria — aplican en los 12 episodios, con o sin foto
+                if esc in ['combinado_con_foto', 'combinado_sin_foto', 'global']:
                     recuerdos = [r['recuerda_objeto_ocluido'] for r in valid_rows if r['recuerda_objeto_ocluido'] is not None]
                     tasa_recuerdo_ocluido = sum(recuerdos) / len(recuerdos) if recuerdos else None
                     
@@ -224,8 +218,7 @@ def generar_resumen(all_results, output_dir):
                 tasa_exito = 0
                 timeouts = sum([r['timeout'] for r in rows])
                 intervenciones_emergencia = sum([r['intervencion_emergencia'] for r in rows])
-                tiempo_medio_s = None
-                aproximaciones_foto = intentos_agarre_foto = tasa_rechazo_foto = None
+                intentos_agarre_foto = tasa_rechazo_foto = None
                 tasa_recuerdo_ocluido = tasa_completado_ocluido = None
 
             summary_rows.append({
@@ -240,12 +233,10 @@ def generar_resumen(all_results, output_dir):
                 'tasa_exito': fmt(tasa_exito, 4),
                 'timeouts': timeouts,
                 'intervenciones_emergencia': intervenciones_emergencia,
-                'aproximaciones_foto': fmt(aproximaciones_foto, 4),
                 'intentos_agarre_foto': fmt(intentos_agarre_foto, 4),
                 'tasa_rechazo_foto': fmt(tasa_rechazo_foto, 4),
                 'tasa_recuerdo_ocluido': fmt(tasa_recuerdo_ocluido, 4),
-                'tasa_completado_ocluido': fmt(tasa_completado_ocluido, 4),
-                'tiempo_medio_s': fmt(tiempo_medio_s, 2)
+                'tasa_completado_ocluido': fmt(tasa_completado_ocluido, 4)
             })
 
     if summary_rows:
@@ -255,8 +246,8 @@ def generar_resumen(all_results, output_dir):
                 'modelo', 'escenario', 'n_total', 'n_validos', 'puntuacion_media',
                 'puntuacion_normalizada_media', 'desviacion_estandar_normalizada',
                 'exitos_completos', 'tasa_exito', 'timeouts', 'intervenciones_emergencia',
-                'aproximaciones_foto', 'intentos_agarre_foto', 'tasa_rechazo_foto',
-                'tasa_recuerdo_ocluido', 'tasa_completado_ocluido', 'tiempo_medio_s'
+                'intentos_agarre_foto', 'tasa_rechazo_foto',
+                'tasa_recuerdo_ocluido', 'tasa_completado_ocluido'
             ]
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()

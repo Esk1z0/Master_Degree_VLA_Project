@@ -14,7 +14,7 @@ import os
 # ──────────────────────────────────────────────
 # PARÁMETROS — ajustar si el tablero es distinto
 # ──────────────────────────────────────────────
-IMGS_DIR       = os.path.join(os.path.dirname(__file__), "../data/new_new_cam_calibration_imgs")
+IMGS_DIR       = os.path.join(os.path.dirname(__file__), "../data/camera_calibration/session_3_active")
 OUTPUT_FILE    = os.path.join(os.path.dirname(__file__), "stereo_calibration_result.npz")
 
 # Número de ESQUINAS INTERIORES del tablero (columnas, filas)
