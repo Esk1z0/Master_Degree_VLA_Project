@@ -19,6 +19,15 @@
 
 ---
 
+## 📽️ Hardware Demonstration
+
+<div align="center">
+  <img src="media/robot_demo.gif" alt="SmolVLA-D Robotic Hardware Demonstration" width="85%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+  <p><em>Figure 1: Autonomous sorting and placement on the physical 6-DoF <strong>SO-101 robotic arm</strong> using <strong>SmolVLA-D</strong> (Stereo Depth Injection).</em></p>
+</div>
+
+---
+
 ## 🌟 Executive Summary
 
 Standard Vision-Language-Action (VLA) models excel at generalist robotic task execution but rely heavily on 2D monocular RGB observations. Consequently, current policies are vulnerable to **3D spatial ambiguity**, **temporal visual occlusions**, and **2D printed photo distractors**.
@@ -118,6 +127,8 @@ The physical experimental platform consists of:
 ```
 .
 ├── README.md                      # Main visual presentation & project documentation
+├── media/                         # Hardware execution animations and media
+│   └── robot_demo.gif             # Physical SO-101 robot execution demo clip
 ├── docs/                          # Official Master's Thesis documents (EN & ES)
 │   ├── SmolVLA_MD_Master_Thesis_EN.pdf
 │   └── SmolVLA_MD_Master_Thesis_ES.pdf
@@ -194,12 +205,21 @@ python lerobot/lerobot/scripts/eval.py \
 
 ---
 
-## 📊 Datasets & Model Checkpoints (Transparency Notice)
+## 📊 Datasets & Model Checkpoints (Open on Hugging Face)
 
-> 🔒 *Raw dataset recordings and model checkpoints are configured for reproducible audit.*
+All official training datasets and pre-trained model checkpoints are publicly accessible on Hugging Face:
 
-- **HuggingFace Datasets:** `[HuggingFace Dataset Repository Placeholder]` *(e.g., `https://huggingface.co/datasets/your-username/so101-smolvla-md`)*
-- **HuggingFace Model Weights:** `[HuggingFace Model Checkpoints Placeholder]` *(e.g., `https://huggingface.co/your-username/smolvla-d-so101`)*
+### 📦 Datasets
+- 🤗 [**`Esk1z0/tfm_final_dataset_120_eps_depth`**](https://huggingface.co/datasets/Esk1z0/tfm_final_dataset_120_eps_depth): Master physical manipulation dataset with pre-computed stereo depth point cloud annotations (120 episodes).
+- 🤗 [**`Esk1z0/tfm_final_dataset_120_eps`**](https://huggingface.co/datasets/Esk1z0/tfm_final_dataset_120_eps): Standard multimodal RGB training dataset (120 demonstration episodes).
+
+### 🤖 Model Checkpoints
+- 🤗 [**`Esk1z0/smolvla_d_v2`**](https://huggingface.co/Esk1z0/smolvla_d_v2): **SmolVLA-D** checkpoint with 3D Stereo Depth Injection into layers 6–8 (*Top hardware performer: 0.864 score*).
+- 🤗 [**`Esk1z0/smolvla_m_v2`**](https://huggingface.co/Esk1z0/smolvla_m_v2): **SmolVLA-M** checkpoint with Causal Temporal Visual Memory ($K=6$).
+- 🤗 [**`Esk1z0/smolvla_vanilla_v2`**](https://huggingface.co/Esk1z0/smolvla_vanilla_v2): **SmolVLA-Vanilla** baseline model checkpoint.
+- 🤗 [**`Esk1z0/smolvla_md_v2`**](https://huggingface.co/Esk1z0/smolvla_md_v2): **SmolVLA-MD** combined multimodal checkpoint.
+
+> ℹ️ *Note: Raw evaluation video recordings exceed Hugging Face free tier storage limits; however, full trial logs, CSV metrics, and score calculation scripts are completely preserved in this repository under [`final_evaluations/`](final_evaluations/).*
 
 ---
 
